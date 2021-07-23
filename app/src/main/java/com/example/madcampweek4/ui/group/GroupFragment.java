@@ -4,42 +4,40 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.madcampweek4.databinding.FragmentGroupBinding;
+import com.example.madcampweek4.R;
+
+import java.util.ArrayList;
 
 public class GroupFragment extends Fragment {
+    private View view;
+    private RecyclerView recyclerView;
+    RecyclerViewAdapter recyclerViewAdapter;
+    ArrayList<String> items;
 
-    private HomeViewModel homeViewModel;
-    private FragmentGroupBinding binding;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_group, container, false);
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        items = new ArrayList<>();
+        items.add("First CardView Item");
+        items.add("Second CardView Item");
+        items.add("Third CardView Item");
+        items.add("Fourth CardView Item");
+        items.add("Fifth CardView Item");
+        items.add("Sixth CardView Item");
+        items.add("Seventh CardView Item");
 
-        binding = FragmentGroupBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        recyclerView = view.findViewById(R.id.groupRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewAdapter = new RecyclerViewAdapter(getContext(), items);
+        recyclerView.setAdapter(recyclerViewAdapter);
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+        return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 }
