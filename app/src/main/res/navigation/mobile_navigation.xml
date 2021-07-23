@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.madcampweek4.ui.home.HomeFragment"
+        android:name="com.example.madcampweek4.ui.group.GroupFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_group" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.madcampweek4.ui.gallery.GalleryFragment"
+        android:name="com.example.madcampweek4.ui.search.SearchFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/nav_slideshow"

@@ -1,4 +1,4 @@
-package com.example.madcampweek4.ui.home;
+package com.example.madcampweek4.ui.group;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
