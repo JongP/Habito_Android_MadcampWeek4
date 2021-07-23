@@ -7,39 +7,41 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.madcampweek4.databinding.FragmentSearchBinding;
+import com.example.madcampweek4.R;
+import com.example.madcampweek4.adapters.SearchGroupAdapter;
+import com.example.madcampweek4.item.SearchGroupItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchFragment extends Fragment {
 
-    private SearchViewModel galleryViewModel;
-    private FragmentSearchBinding binding;
+    private TextView tv_search;
+    private RecyclerView rv_searchGroup;
+    private SearchGroupAdapter searchGroupAdapter;
+    private List<SearchGroupItem> searchGroupItemList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                new ViewModelProvider(this).get(SearchViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        binding = FragmentSearchBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        rv_searchGroup= view.findViewById(R.id.rv_groupSearch);
+        rv_searchGroup.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
 
-        final TextView textView = binding.textGallery;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+        searchGroupItemList= new ArrayList<SearchGroupItem>();
+        searchGroupAdapter = new SearchGroupAdapter(searchGroupItemList,getContext());
+
+        rv_searchGroup.setAdapter(searchGroupAdapter);
+
+
+        searchGroupItemList.add(new SearchGroupItem("testgroupName","testGroupContent"));
+        searchGroupAdapter.notifyDataSetChanged();
+
+        return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 }
