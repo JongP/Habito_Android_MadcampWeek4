@@ -1,12 +1,14 @@
 package com.example.madcampweek4.ui.board;
 
+import android.graphics.Bitmap;
+
 public class Board {
     String post_id;
     String user_id;
     String user_profilePic;
     String group_id;
     String post_content;
-    String post_url;
+    Bitmap post_bitmap;
     String post_date;
     int like;
 
@@ -17,7 +19,7 @@ public class Board {
                  String user_profilePic,
                  String group_id,
                  String post_content,
-                 String post_url,
+                 Bitmap post_bitmap,
                  String post_date,
                  int like ){
         this.post_id = post_id;
@@ -25,7 +27,7 @@ public class Board {
         this.user_profilePic = user_profilePic;
         this.group_id = group_id;
         this.post_content = post_content;
-        this.post_url = post_url;
+        this.post_bitmap = post_bitmap;
         this.post_date = post_date;
         this.like = like;
     }
@@ -50,8 +52,8 @@ public class Board {
         this.post_content = post_content;
     }
 
-    public void setPost_url(String post_url) {
-        this.post_url = post_url;
+    public void setPost_bitmap(Bitmap post_bitmap) {
+        this.post_bitmap = post_bitmap;
     }
 
     public void setPost_date(String post_date) {
@@ -82,8 +84,8 @@ public class Board {
         return post_content;
     }
 
-    public String getPost_url() {
-        return post_url;
+    public Bitmap getPost_bitmap() {
+        return post_bitmap;
     }
 
     public String getPost_date() {

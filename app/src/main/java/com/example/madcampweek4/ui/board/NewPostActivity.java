@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -29,6 +30,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class NewPostActivity extends AppCompatActivity {
@@ -39,6 +41,8 @@ public class NewPostActivity extends AppCompatActivity {
 
     ImageView iv_newPostImage;
     EditText et_newPostDescription;
+    Bitmap bitmap;
+    byte[] bitmap_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,17 +101,21 @@ public class NewPostActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK){
-            Bitmap bitmap = (Bitmap)data.getParcelableExtra("data");
+            bitmap = (Bitmap)data.getParcelableExtra("data");
             iv_newPostImage.setImageBitmap(bitmap);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bitmap_content = baos.toByteArray();
         }
     }
 
     public void insertData(){
-
-
-        Board boardItem = new Board("", "", "", "", et_newPostDescription.getText().toString(), String.valueOf(iv_newPostImage), "", 0);
-
         String postId = databaseReference.push().getKey().toString();
+
+        StorageReference contentImageRef = storageReference.child(postId);
+        UploadTask uploadTask = contentImageRef.putBytes(bitmap_content);
+
+        Board boardItem = new Board("", "", "", "", et_newPostDescription.getText().toString(), bitmap, "", 0);
 
         databaseReference.child(postId).setValue(boardItem).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
