@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     else {
                                         intent.putExtra("name", String.valueOf(task.getResult().getValue()));
                                         // 여기는 일반 사용자 사진 가져오기!
-                                        // intent.putExtra("profileUrl", String.valueOf(String.valueOf(gaccount.getPhotoUrl())));
                                         intent.putExtra("profileUrl", "일반");
                                         startActivity(intent);
                                         finish();

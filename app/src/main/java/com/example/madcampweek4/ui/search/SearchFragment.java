@@ -173,7 +173,7 @@ public class SearchFragment extends Fragment {
                             }
                         });
                     }else{
-                    groupItemList.add(group);
+                        groupItemList.add(group);
                     }
                 }
                 recyclerViewAdapter.notifyDataSetChanged();
