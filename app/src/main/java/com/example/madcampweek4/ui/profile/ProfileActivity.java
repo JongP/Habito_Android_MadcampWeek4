@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.bumptech.glide.Glide;
 import com.example.madcampweek4.R;
 import com.example.madcampweek4.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,6 +52,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         userName.setText(name);
         userEmail.setText(email);
+
+
+        ImageView iv_profileUrl=findViewById(R.id.iv_profileUrl);
+        iv_profileUrl.setImageResource(R.drawable.ic_menu_profile);
+        String profileUrl=intent.getStringExtra("profileUrl");
+        if (profileUrl!="일반"){
+            Glide.with(this).load(profileUrl).into(iv_profileUrl);
+        }
+
 
         final Button btn_update_pwd = findViewById(R.id.btn_update_pwd);
         final Button btn_update_name=findViewById(R.id.btn_update_name);
