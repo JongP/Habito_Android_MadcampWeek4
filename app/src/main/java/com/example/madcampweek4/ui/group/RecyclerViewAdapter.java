@@ -73,13 +73,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 userRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        Log.d("Adapter", dataSnapshot.getValue().toString());
-                        HashMap<String,Object> hashMap = (HashMap<String, Object>) dataSnapshot.getValue();
-                        Log.d("Adapter", hashMap.toString());
-                        if(hashMap.get(groupId)==null) {
+                        //Log.d("Adapter", dataSnapshot.getValue().toString());
+                        HashMap<String,Object> hashMap=null;
+                        if(dataSnapshot!=null ) hashMap = (HashMap<String, Object>) dataSnapshot.getValue();
+                        //Log.d("Adapter", hashMap.toString());
+                        if(dataSnapshot==null||hashMap==null ||hashMap.get(groupId)==null) {
                             HashMap<String,Object> map = new HashMap<>();
                             map.put(groupData.get(position).getId(),groupData.get(position).getId());
                             userRef.updateChildren(map);
+
+                            HashMap<String,Object> map1 =new HashMap<>();
+                            map1.put(userId,userId);
+                            groupRef.updateChildren(map1);
+
                             Toast.makeText(v.getContext(),"Joined",Toast.LENGTH_SHORT).show();
                         }
                         else{
