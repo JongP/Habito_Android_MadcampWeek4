@@ -1,7 +1,10 @@
 package com.example.madcampweek4;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth; // firebase auth
     private DatabaseReference mDatabaseRef; //realtime db
-    private EditText mEtEmail, mEtPwd;
+    private EditText mEtEmail, mEtPwd, mEtName;
     private Button mBtnRegister;
 
     @Override
@@ -33,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         mEtEmail=findViewById(R.id.et_email);
         mEtPwd=findViewById(R.id.et_pwd);
+        mEtName=findViewById(R.id.et_name);
         mBtnRegister=findViewById(R.id.btn_register);
 
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String strEmail=mEtEmail.getText().toString();
                 String strPwd=mEtPwd.getText().toString();
+                String strName=mEtName.getText().toString();
 
                 mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -49,11 +54,16 @@ public class RegisterActivity extends AppCompatActivity {
                             UserAccount account=new UserAccount();
                             account.setIdToken(firebaseUser.getUid());
                             account.setEmailId(firebaseUser.getEmail());
+                            account.setName(strName);
                             account.setPassword(strPwd);//ㄱㅊ
 
                             //setValue: db에 insert
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
                             Toast.makeText(RegisterActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(RegisterActivity.this, LoginActivity.class);
+//                            intent.putExtra("email", strEmail);
+//                            intent.putExtra("password", strPwd);
+                            startActivity(intent);
 
                         } else{
                             Toast.makeText(RegisterActivity.this, "회원가입 실패!", Toast.LENGTH_SHORT).show();
