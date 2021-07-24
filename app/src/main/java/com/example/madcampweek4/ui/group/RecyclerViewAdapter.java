@@ -4,25 +4,28 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.madcampweek4.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private List<String> groupData;
+    private ArrayList<Group> groupData;
 
 
-    RecyclerViewAdapter(Context context, List<String> groupData){
+    RecyclerViewAdapter(Context context, ArrayList<Group> groupData){
         this.layoutInflater = LayoutInflater.from(context);
         this.groupData = groupData;
     }
@@ -32,26 +35,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.group_cardview, parent, false);
-        return new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         //bind the textview with data received
+        Glide.with(holder.itemView)
+                .load(groupData.get(position).getProfile())
+                .into(holder.img_groupImage);
+        holder.tv_groupName.setText(groupData.get(position).getGroupName());
+        holder.tv_groupInfo.setText(groupData.get(position).getGroupInfo());
 
-        String groupName = groupData.get(position);
-        holder.tv_groupName.setText(groupName);
-
-        String groupInfo = groupData.get(position);
-        holder.tv_groupInfo.setText(groupInfo);
-
-//        String groupImage = data.get(position);
-//        holder.img_groupImage.setImageResource(groupImage);
     }
 
     @Override
     public int getItemCount() {
-        return groupData.size();
+        return (groupData != null ? groupData.size() : 0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -64,6 +65,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tv_groupName = itemView.findViewById(R.id.tv_groupName);
             tv_groupInfo = itemView.findViewById(R.id.tv_groupInfo);
             img_groupImage = itemView.findViewById(R.id.img_groupImage);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    
+                }
+            });
         }
     }
 }
