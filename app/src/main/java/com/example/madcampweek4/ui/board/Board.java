@@ -1,4 +1,4 @@
-package com.example.madcampweek4.ui.Board;
+package com.example.madcampweek4.ui.board;
 
 public class Board {
     String post_id;

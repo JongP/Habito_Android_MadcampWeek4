@@ -1,8 +1,7 @@
-package com.example.madcampweek4.ui.Board;
+package com.example.madcampweek4.ui.board;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,14 +12,8 @@ import android.view.ViewGroup;
 
 import com.example.madcampweek4.MainActivity;
 import com.example.madcampweek4.R;
-import com.example.madcampweek4.ui.group.GroupRecyclerViewAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 

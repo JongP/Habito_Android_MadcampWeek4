@@ -1,21 +1,14 @@
-package com.example.madcampweek4.ui.Board;
+package com.example.madcampweek4.ui.board;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.example.madcampweek4.MainActivity;
 import com.example.madcampweek4.R;
-
-import static android.app.Activity.RESULT_OK;
 
 public class NewPostFragment extends Fragment {
     private View view;
