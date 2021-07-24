@@ -8,8 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.madcampweek4.ui.board.BoardFragment;
-import com.example.madcampweek4.ui.board.NewPostFragment;
 import com.example.madcampweek4.ui.profile.ProfileActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -28,8 +26,6 @@ import com.example.madcampweek4.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-    private FragmentManager fm;
-    private FragmentTransaction ft;
     String email, name;
 
     @Override
@@ -37,15 +33,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        Intent intent=getIntent();
-        email = intent.getStringExtra("email");
-        name=intent.getStringExtra("name");
+//        Intent intent=getIntent();
+//        email = intent.getStringExtra("email");
+//        name=intent.getStringExtra("name");
 
         //디버그 전용 주석
         ////////////////////// 여기에 이메일, 아이디 넣으세여 ///////////////////
-//        Login login = new Login("id4", "id4@gmail.com");
-//        name=login.getName();
-//        email=login.getEmail();
+        Login login = new Login("id4", "id4@gmail.com");
+        name=login.getName();
+        email=login.getEmail();
 
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -112,20 +108,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setFragment(int n){
-        fm = getSupportFragmentManager();
-        ft= fm.beginTransaction();
-        switch (n){
-            //from Group to Board
-            case 0:
-                ft.replace(R.id.nav_host_fragment_content_main, new BoardFragment());
-                ft.commit();
-                break;
-            //from Board to NewPost
-            case 1:
-                ft.replace(R.id.nav_host_fragment_content_main, new NewPostFragment());
-                ft.commit();
-                break;
-        }
-    }
 }

@@ -1,5 +1,6 @@
 package com.example.madcampweek4.ui.group;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madcampweek4.MainActivity;
 import com.example.madcampweek4.R;
+import com.example.madcampweek4.ui.board.BoardActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -39,14 +41,15 @@ public class GroupFragment extends Fragment {
         recyclerView.setAdapter(groupRecyclerViewAdapter);
 
         database=FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
-        databaseReference = database.getReference("Group"); //db Table 연동 : 오빠
+        databaseReference = database.getReference("MadCampWeek4/Group"); //db Table 연동 : 오빠
 
 
 
         groupRecyclerViewAdapter.setOnItemClickListener(new GroupRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                ((MainActivity)getActivity()).setFragment(0);
+                Intent intent = new Intent(getActivity(), BoardActivity.class);
+                startActivity(intent);
             }
         });
 

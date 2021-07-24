@@ -10,6 +10,8 @@ public class Board {
     String post_date;
     int like;
 
+    public Board(){}
+
     public Board(String post_id,
                  String user_id,
                  String user_profilePic,
