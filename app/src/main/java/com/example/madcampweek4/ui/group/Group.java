@@ -5,7 +5,11 @@ public class Group {
     private String groupName;
     private String groupInfo;
 
-    public Group(){}
+    public Group(String profile, String groupName, String groupInfo){
+        this.profile = profile;
+        this.groupName = groupName;
+        this.groupInfo = groupInfo;
+    }
 
     public String getProfile() {
         return profile;

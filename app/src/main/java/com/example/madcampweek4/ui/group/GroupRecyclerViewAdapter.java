@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,15 +16,14 @@ import com.example.madcampweek4.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecyclerViewAdapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
     private ArrayList<Group> groupData;
 
 
-    RecyclerViewAdapter(Context context, ArrayList<Group> groupData){
+    GroupRecyclerViewAdapter(Context context, ArrayList<Group> groupData){
         this.layoutInflater = LayoutInflater.from(context);
         this.groupData = groupData;
     }
@@ -55,6 +53,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return (groupData != null ? groupData.size() : 0);
     }
 
+    public interface OnItemClickListener{
+        void onItemClick(View v, int pos);
+    }
+
+    private OnItemClickListener mListener = null;
+    
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView tv_groupName, tv_groupInfo;
@@ -69,7 +77,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    
+                    int pos = getAdapterPosition();
+                    if(pos!=RecyclerView.NO_POSITION){
+                        if(mListener!=null){
+                            mListener.onItemClick(v, pos);
+                        }
+                    }
                 }
             });
         }
