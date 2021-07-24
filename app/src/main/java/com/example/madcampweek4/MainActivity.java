@@ -8,10 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.madcampweek4.ui.profile.ProfileActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,8 +22,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madcampweek4.databinding.ActivityMainBinding;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
         nav_header_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, ProfileActivity.class);
+                intent.putExtra("email", email);
+                intent.putExtra("name", name);
                 Toast.makeText(MainActivity.this, "헤더 누름!", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
         // 기본 사진, 카카오로 받아오기
