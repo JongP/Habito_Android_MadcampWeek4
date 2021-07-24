@@ -2,6 +2,7 @@ package com.example.madcampweek4.ui.profile;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,20 +20,31 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.bumptech.glide.Glide;
+import com.example.madcampweek4.LoginActivity;
 import com.example.madcampweek4.R;
 import com.example.madcampweek4.RegisterActivity;
+import com.example.madcampweek4.ui.group.Group;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import org.jetbrains.annotations.NotNull;
 
 
 public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
     String name, email, profileUrl;
 
     @Override
@@ -43,9 +55,15 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent=getIntent();
         name = intent.getStringExtra("name");
         email = intent.getStringExtra("email");
+        profileUrl=intent.getStringExtra("profileUrl");
 
         mFirebaseAuth=FirebaseAuth.getInstance();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference().child("UserProfile");
+
+        FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
 
         TextView userName=findViewById(R.id.userName);
         TextView userEmail=findViewById(R.id.userEmail);
@@ -54,10 +72,29 @@ public class ProfileActivity extends AppCompatActivity {
         userEmail.setText(email);
 
         ImageView iv_profileUrl=findViewById(R.id.iv_profileUrl);
-        iv_profileUrl.setImageResource(R.drawable.ic_menu_profile);
-        String profileUrl=intent.getStringExtra("profileUrl");
-        if (profileUrl!="일반"){
+
+
+
+        if (!profileUrl.equals("일반")){
             Glide.with(this).load(profileUrl).into(iv_profileUrl);
+        } else{
+            // 파베에 있는 거 가져오기
+            String uid=firebaseUser.getUid();
+            StorageReference profileRef = storageReference.child(uid);
+            Log.d("profileRef 는?1", profileRef.toString());
+
+            profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(getApplicationContext()).load(uri).into(iv_profileUrl);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull @NotNull Exception e) {
+                    Log.d("실패했음", " ");
+                }
+            });
+
         }
 
 
@@ -73,7 +110,7 @@ public class ProfileActivity extends AppCompatActivity {
                 // 로그아웃
                 mFirebaseAuth.signOut();
                 Toast.makeText(ProfileActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(ProfileActivity.this, com.example.madcampweek4.LoginActivity.class);
+                Intent intent=new Intent(ProfileActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -83,7 +120,7 @@ public class ProfileActivity extends AppCompatActivity {
                 // 로그아웃
                 mFirebaseAuth.getCurrentUser().delete();
                 Toast.makeText(ProfileActivity.this, "회원 탈퇴" , Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(ProfileActivity.this, com.example.madcampweek4.LoginActivity.class);
+                Intent intent=new Intent(ProfileActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -119,7 +156,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                 mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").setValue(EtName);
                 Toast.makeText(ProfileActivity.this, "이름 변경!", Toast.LENGTH_SHORT).show();
-
 
             }
         });

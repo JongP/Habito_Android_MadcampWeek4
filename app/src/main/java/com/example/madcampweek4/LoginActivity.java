@@ -47,7 +47,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient googleApiClient;
     private static final int REQ_SIGN_GOOGLE=100;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +93,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 }
                             });
 
-
                         } else {
                             Toast.makeText(LoginActivity.this, "로그인 실패!", Toast.LENGTH_SHORT).show();
 
@@ -111,7 +109,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 startActivity(intent);
             }
         });
-
 
 
         // 구글 로그인 관련!
@@ -132,7 +129,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 startActivityForResult(intent, REQ_SIGN_GOOGLE);//인증 화면 절차 넘기고 다시 돌아오는
             }
         });
-
     }
 
 
