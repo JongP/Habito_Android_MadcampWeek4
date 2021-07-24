@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +24,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<Group> groupData;
 
 
-    RecyclerViewAdapter(Context context, ArrayList<Group> groupData){
+    public RecyclerViewAdapter(Context context, ArrayList<Group> groupData){
         this.layoutInflater = LayoutInflater.from(context);
         this.groupData = groupData;
     }
