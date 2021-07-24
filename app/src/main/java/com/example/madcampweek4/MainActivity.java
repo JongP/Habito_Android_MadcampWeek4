@@ -1,18 +1,24 @@
 package com.example.madcampweek4;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.madcampweek4.ui.board.BoardFragment;
 import com.example.madcampweek4.ui.board.NewPostFragment;
 import com.example.madcampweek4.ui.profile.ProfileActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,13 +30,26 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madcampweek4.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    String email, name;
+    String email, name, profileUrl;
+
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabaseRef;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=getIntent();
         email = intent.getStringExtra("email");
         name=intent.getStringExtra("name");
+        profileUrl=intent.getStringExtra("profileUrl");
 
         //디버그 전용 주석
         ////////////////////// 여기에 이메일, 아이디 넣으세여 ///////////////////
@@ -51,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        mFirebaseAuth= FirebaseAuth.getInstance();
+        mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference().child("UserProfile");
+
+        FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
+
+
 
         // nav header 관련
         View nav_header_view=binding.navView.getHeaderView(0);
@@ -60,13 +89,38 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(MainActivity.this, ProfileActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("name", name);
+                intent.putExtra("profileUrl", profileUrl);
+
                 Toast.makeText(MainActivity.this, "헤더 누름!", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
-        // 기본 사진, 카카오로 받아오기
+
+        // 기본 사진
         ImageView imageView=nav_header_view.findViewById(R.id.imageView);
-        imageView.setImageResource(R.drawable.ic_menu_profile);
+
+        if (!profileUrl.equals("일반")){
+            Glide.with(this).load(profileUrl).into(imageView);
+        } else{
+            // 파베에 있는 거 가져오기
+            String uid=firebaseUser.getUid();
+            StorageReference profileRef = storageReference.child(uid);
+
+            profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(getApplicationContext()).load(uri).into(imageView);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull @NotNull Exception e) {
+                    Log.d("실패했음", " ");
+                }
+            });
+
+        }
+
+
         // 이메일
         TextView userEmail=(TextView)nav_header_view.findViewById(R.id.userEmail);
         TextView userName=(TextView)nav_header_view.findViewById(R.id.userName);
