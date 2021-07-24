@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.madcampweek4.ui.board.BoardFragment;
 import com.example.madcampweek4.ui.board.NewPostFragment;
 import com.example.madcampweek4.ui.profile.ProfileActivity;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    String email, name;
+    String email, name, profileUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=getIntent();
         email = intent.getStringExtra("email");
         name=intent.getStringExtra("name");
+        profileUrl=intent.getStringExtra("profileUrl");
 
         //디버그 전용 주석
         ////////////////////// 여기에 이메일, 아이디 넣으세여 ///////////////////
@@ -60,13 +62,25 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(MainActivity.this, ProfileActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("name", name);
+                if (profileUrl!="일반"){
+                    intent.putExtra("profileUrl", profileUrl);
+                } else{
+                    intent.putExtra("profileUrl", "일반");
+                }
+
                 Toast.makeText(MainActivity.this, "헤더 누름!", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
-        // 기본 사진, 카카오로 받아오기
+
+        // 기본 사진
         ImageView imageView=nav_header_view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_menu_profile);
+        if (profileUrl!="일반"){
+            Glide.with(this).load(profileUrl).into(imageView);
+        }
+
+
         // 이메일
         TextView userEmail=(TextView)nav_header_view.findViewById(R.id.userEmail);
         TextView userName=(TextView)nav_header_view.findViewById(R.id.userName);

@@ -33,7 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
-    String name, email;
+    String name, email, profileUrl;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +52,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         userName.setText(name);
         userEmail.setText(email);
-
 
         ImageView iv_profileUrl=findViewById(R.id.iv_profileUrl);
         iv_profileUrl.setImageResource(R.drawable.ic_menu_profile);
