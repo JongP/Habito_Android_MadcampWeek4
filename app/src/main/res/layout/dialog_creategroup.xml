@@ -10,6 +10,13 @@
         android:scaleType="center"
         android:background="@color/purple_200"
         android:contentDescription="@string/app_name" />
+    <ImageView
+        android:id="@+id/iv_groupProfile"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal"/>
     <EditText
         android:id="@+id/et_groupName"
         android:inputType="text"
