@@ -36,9 +36,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
@@ -49,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private SignInButton btn_google;
     private GoogleApiClient googleApiClient;
     private static final int REQ_SIGN_GOOGLE=100;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
