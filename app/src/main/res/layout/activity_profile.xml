@@ -39,6 +39,26 @@
         app:layout_constraintVertical_bias="0.063" />
 
     <Button
+        android:id="@+id/btn_update_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:text="change name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_update_pwd"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_update_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:text="change pwd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_update_name" />
+
+    <Button
         android:backgroundTint="@color/purple_200"
         android:id="@+id/btn_logout"
         android:layout_width="0dp"
@@ -58,5 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_logout"
         android:layout_margin="10dp"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

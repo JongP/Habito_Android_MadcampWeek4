@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
         userName.setText(name);
 
 
-
-
         setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
