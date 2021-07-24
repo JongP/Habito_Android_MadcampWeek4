@@ -8,14 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.madcampweek4.ui.Board.BoardFragment;
-import com.example.madcampweek4.ui.Board.NewPostFragment;
+import com.example.madcampweek4.ui.board.BoardFragment;
+import com.example.madcampweek4.ui.board.NewPostFragment;
 import com.example.madcampweek4.ui.profile.ProfileActivity;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Board.NewPostFragment">
+    tools:context=".ui.board.NewPostFragment">
 
     <ImageView
         android:id="@+id/iv_newPostImage"
