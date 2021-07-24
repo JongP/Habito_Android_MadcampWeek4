@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=getIntent();
         email = intent.getStringExtra("email");
         name=intent.getStringExtra("name");
+
+
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
