@@ -3,15 +3,29 @@ package com.example.madcampweek4.ui.Board;
 public class Board {
     String post_id;
     String user_id;
+    String user_profilePic;
     String group_id;
-    String post_title;
     String post_content;
     String post_url;
     String post_date;
     int like;
 
-    public Board(){
-
+    public Board(String post_id,
+                 String user_id,
+                 String user_profilePic,
+                 String group_id,
+                 String post_content,
+                 String post_url,
+                 String post_date,
+                 int like ){
+        this.post_id = post_id;
+        this.user_id = user_id;
+        this.user_profilePic = user_profilePic;
+        this.group_id = group_id;
+        this.post_content = post_content;
+        this.post_url = post_url;
+        this.post_date = post_date;
+        this.like = like;
     }
 
     public void setPost_id(String post_id) {
@@ -26,8 +40,8 @@ public class Board {
         this.group_id = group_id;
     }
 
-    public void setPost_title(String post_title) {
-        this.post_title = post_title;
+    public void setUser_profilePic(String user_profilePic) {
+        this.user_profilePic = user_profilePic;
     }
 
     public void setPost_content(String post_content) {
@@ -58,8 +72,8 @@ public class Board {
         return group_id;
     }
 
-    public String getPost_title() {
-        return post_title;
+    public String getUser_profilePic() {
+        return user_profilePic;
     }
 
     public String getPost_content() {

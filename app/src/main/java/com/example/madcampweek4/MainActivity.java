@@ -8,12 +8,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.madcampweek4.ui.Board.BoardFragment;
+import com.example.madcampweek4.ui.Board.NewPostFragment;
 import com.example.madcampweek4.ui.profile.ProfileActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -24,9 +28,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.madcampweek4.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
     String email, name;
 
     @Override
@@ -69,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
         userEmail.setText(email);
         userName.setText(name);
 
-
         setSupportActionBar(binding.appBarMain.toolbar);
-
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -107,6 +110,23 @@ public class MainActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
         } else{
             super.onBackPressed();
+        }
+    }
+
+    public void setFragment(int n){
+        fm = getSupportFragmentManager();
+        ft= fm.beginTransaction();
+        switch (n){
+            //from Group to Board
+            case 0:
+                ft.replace(R.id.nav_host_fragment_content_main, new BoardFragment());
+                ft.commit();
+                break;
+            //from Board to NewPost
+            case 1:
+                ft.replace(R.id.nav_host_fragment_content_main, new NewPostFragment());
+                ft.commit();
+                break;
         }
     }
 }
