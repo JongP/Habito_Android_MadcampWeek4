@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.madcampweek4.ui.profile.ProfileActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.madcampweek4.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -50,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         Intent intent=getIntent();
         email = intent.getStringExtra("email");
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         storageReference = storage.getReference().child("UserProfile");
 
         FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
-
 
 
         // nav header 관련

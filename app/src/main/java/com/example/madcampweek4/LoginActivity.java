@@ -47,17 +47,45 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient googleApiClient;
     private static final int REQ_SIGN_GOOGLE=100;
 
+    private String TAG ="LoginActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mFirebaseAuth=FirebaseAuth.getInstance();
+        mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
+
+        if(user!=null){
+            Log.d(TAG, "user is not null");
+            Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra("email", user.getEmail());
+            mDatabaseRef.child("UserAccount").child(user.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (!task.isSuccessful()) {
+                        Log.e("firebase", "Error getting data", task.getException());
+                    }
+                    else {
+                        intent.putExtra("name", String.valueOf(task.getResult().getValue()));
+                        // 여기는 일반 사용자 사진 가져오기!
+                        intent.putExtra("profileUrl", "일반");
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            });
+        }
+
+
         Button btn_register=findViewById(R.id.btn_register);
         Button btn_login=findViewById(R.id.btn_login);
 
-        mFirebaseAuth=FirebaseAuth.getInstance();
-        mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
+
+
 
         mEtEmail=findViewById(R.id.et_email);
         mEtPwd=findViewById(R.id.et_pwd);
