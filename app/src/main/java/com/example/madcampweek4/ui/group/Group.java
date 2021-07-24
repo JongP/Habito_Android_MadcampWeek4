@@ -1,11 +1,11 @@
 package com.example.madcampweek4.ui.group;
 
-public class GroupItem {
+public class Group {
     private String profile;
     private String groupName;
     private String groupInfo;
 
-    public GroupItem(){}
+    public Group(){}
 
     public String getProfile() {
         return profile;
