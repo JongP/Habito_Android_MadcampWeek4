@@ -6,6 +6,9 @@ public class Group {
     private String groupName;
     private String groupInfo;
 
+    public Group(){
+    }
+
     public Group(String id, String profile, String groupName, String groupInfo) {
         this.id = id;
         this.profile = profile;

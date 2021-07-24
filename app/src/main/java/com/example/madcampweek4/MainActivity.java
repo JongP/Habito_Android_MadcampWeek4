@@ -36,15 +36,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /* 디버그 전용 주석
+
         Intent intent=getIntent();
         email = intent.getStringExtra("email");
         name=intent.getStringExtra("name");
-        */
+
+        //디버그 전용 주석
         ////////////////////// 여기에 이메일, 아이디 넣으세여 ///////////////////
-        Login login = new Login("id4", "id4@gmail.com");
-        name=login.getName();
-        email=login.getEmail();
+//        Login login = new Login("id4", "id4@gmail.com");
+//        name=login.getName();
+//        email=login.getEmail();
 
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
