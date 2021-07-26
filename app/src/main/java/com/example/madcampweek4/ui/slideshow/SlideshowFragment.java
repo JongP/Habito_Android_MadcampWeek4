@@ -1,7 +1,6 @@
 package com.example.madcampweek4.ui.slideshow;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,14 +10,11 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.madcampweek4.LoginActivity;
-import com.example.madcampweek4.MainActivity;
 import com.example.madcampweek4.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,9 +23,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Calendar;
 
 import static android.content.Context.MODE_NO_LOCALIZED_COLLATORS;
 
@@ -37,7 +36,7 @@ public class SlideshowFragment extends Fragment {
 
     public String fname=null;
     public String str=null;
-    public CalendarView calendarView;
+    public MaterialCalendarView calendarView;
     public Button cha_Btn,del_Btn,save_Btn;
     public TextView diaryTextView,textView2,textView3;
     public EditText contextEditText;
@@ -65,8 +64,6 @@ public class SlideshowFragment extends Fragment {
 
         contextEditText=view.findViewById(R.id.contextEditText);
 
-
-
         // firebase
         mFirebaseAuth= FirebaseAuth.getInstance();
         FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
@@ -86,20 +83,21 @@ public class SlideshowFragment extends Fragment {
             }
         });
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                diaryTextView.setVisibility(View.VISIBLE);
-                save_Btn.setVisibility(View.VISIBLE);
-                contextEditText.setVisibility(View.VISIBLE);
-                textView2.setVisibility(View.INVISIBLE);
-                cha_Btn.setVisibility(View.INVISIBLE);
-                del_Btn.setVisibility(View.INVISIBLE);
-                diaryTextView.setText(String.format("%d / %d / %d",year,month+1,dayOfMonth));
-                contextEditText.setText("");
-                checkDay(year,month,dayOfMonth,userID);
-            }
-        });
+        calendarView.setSelectedDate(CalendarDay.today());
+//        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//            @Override
+//            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+//                diaryTextView.setVisibility(View.VISIBLE);
+//                save_Btn.setVisibility(View.VISIBLE);
+//                contextEditText.setVisibility(View.VISIBLE);
+//                textView2.setVisibility(View.INVISIBLE);
+//                cha_Btn.setVisibility(View.INVISIBLE);
+//                del_Btn.setVisibility(View.INVISIBLE);
+//                diaryTextView.setText(String.format("%d / %d / %d",year,month+1,dayOfMonth));
+//                contextEditText.setText("");
+//                checkDay(year,month,dayOfMonth,userID);
+//            }
+//        });
 
 
         save_Btn.setOnClickListener(new View.OnClickListener() {
@@ -122,12 +120,6 @@ public class SlideshowFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //로그인 및 회원가입 엑티비티에서 이름을 받아옴
-//        Intent intent=getIntent();
-//        String name=intent.getStringExtra("userName");
-//        final String userID=intent.getStringExtra("userID");
-
     }
 
     public void  checkDay(int cYear,int cMonth,int cDay,String userID){

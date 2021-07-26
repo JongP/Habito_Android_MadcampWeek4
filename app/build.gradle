@@ -70,5 +70,8 @@ dependencies {
 
     // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    compile 'com.google.android.gms:play-services-ads:11.2.0'
 
+    //calendarview
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
 }
