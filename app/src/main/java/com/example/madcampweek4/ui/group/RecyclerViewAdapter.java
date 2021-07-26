@@ -44,6 +44,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.groupData = groupData;
     }
 
+    public void filterList(ArrayList<Group> filterList){
+        groupData=filterList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @NotNull
     @Override

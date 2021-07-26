@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +50,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class SearchFragment extends Fragment {
 
-    private TextView tv_search;
+    private EditText et_searchGroup;
     private RecyclerView rv_searchGroup;
     private RecyclerViewAdapter recyclerViewAdapter;
     private FloatingActionButton fb_search;
@@ -72,6 +74,8 @@ public class SearchFragment extends Fragment {
 
         rv_searchGroup= view.findViewById(R.id.rv_groupSearch);
         fb_search = view.findViewById(R.id.fb_search);
+        et_searchGroup=view.findViewById(R.id.et_searchGroup);
+
         rv_searchGroup.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
 
         groupItemList= new ArrayList<Group>();
@@ -182,7 +186,21 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        et_searchGroup.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                filterGroups(s.toString());
+            }
+        });
 
         return view;
     }
@@ -193,6 +211,21 @@ public class SearchFragment extends Fragment {
         if(requestCode==GALLERY_CODE && resultCode==RESULT_OK && data!=null &&data.getData()!=null){
             selectImageUri=data.getData();
             iv_groupProfile.setImageURI(selectImageUri);
+        }
+    }
+
+    private  void filterGroups(String name){
+        ArrayList<Group> filterList = new ArrayList<>();
+        for(Group item : groupItemList){
+            if(item.getGroupName().toLowerCase().contains(name.toLowerCase())){
+                filterList.add(item);
+            }
+        }
+        if (filterList.isEmpty()){
+            Toast.makeText(getContext(),"No Group found for searched query",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            recyclerViewAdapter.filterList(filterList);
         }
     }
 }
