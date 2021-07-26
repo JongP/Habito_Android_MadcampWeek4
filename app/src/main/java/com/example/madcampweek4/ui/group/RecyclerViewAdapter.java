@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -89,7 +91,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             Toast.makeText(v.getContext(),"Joined",Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(v.getContext(),"Already joined",Toast.LENGTH_SHORT).show();
+                            userRef.child(groupId).removeValue();
+                            groupRef.child(userId).removeValue();
+
+                            Toast.makeText(v.getContext(),"Unjoined",Toast.LENGTH_SHORT).show();
                         }
 
                     }

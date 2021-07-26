@@ -136,8 +136,8 @@ public class SearchFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 //파이어베이스 데이터베이스의 데이터를 받아오는곳
-                Log.d(TAG, "listenr staart");
-                Log.d(TAG,snapshot.toString());
+                //Log.d(TAG, "listenr staart");
+                //Log.d(TAG,snapshot.toString());
                 groupItemList.clear();
                 for(DataSnapshot snapshot1 : snapshot.getChildren()){
                     //Log.d(TAG, "onDataChange: loop");
