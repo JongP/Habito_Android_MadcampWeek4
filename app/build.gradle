@@ -71,7 +71,8 @@ dependencies {
     // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
-    //for camera permission
+    //for camera
     implementation 'com.karumi:dexter:6.0.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 }

@@ -5,18 +5,29 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.madcampweek4.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,13 +38,20 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class NewPostActivity extends AppCompatActivity {
+    private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private FirebaseStorage storage;
@@ -42,7 +60,7 @@ public class NewPostActivity extends AppCompatActivity {
     ImageView iv_newPostImage;
     EditText et_newPostDescription;
     Bitmap bitmap;
-    byte[] bitmap_content;
+    Uri uri_newPostImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +76,7 @@ public class NewPostActivity extends AppCompatActivity {
         databaseReference = database.getReference("MadCampWeek4/Post"); //realtime database
 
         storage = FirebaseStorage.getInstance();  //for image
-        storageReference = storage.getReference().child("Post/post_url");
+        storageReference = storage.getReference();
 
         iv_newPostImage = findViewById(R.id.iv_newPostImage);
         et_newPostDescription = findViewById(R.id.et_newPostDescription);
@@ -93,6 +111,7 @@ public class NewPostActivity extends AppCompatActivity {
     }
 
     public void showCamera(View v){
+        Log.d("카메라 성공", "제발");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 1);
     }
@@ -101,21 +120,33 @@ public class NewPostActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK){
-            bitmap = (Bitmap)data.getParcelableExtra("data");
-            iv_newPostImage.setImageBitmap(bitmap);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            bitmap_content = baos.toByteArray();
+            Log.d("결과 받기 성공", "제발");
+            bitmap = data.getParcelableExtra("data");
+            uri_newPostImage = getImageUri(this, bitmap);
+            Log.d("uri로 받기 성공", "제발");
+            iv_newPostImage.setImageURI(uri_newPostImage);
         }
     }
 
+    private Uri getImageUri(Context context, Bitmap inImage) {
+        Log.d("이미지 받기 성공", "제발");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "IMG_" + Calendar.getInstance().getTime(), null);
+        return Uri.parse(path);
+    }
+
     public void insertData(){
+        storageReference= storage.getReference().child("Post");
         String postId = databaseReference.push().getKey().toString();
 
-        StorageReference contentImageRef = storageReference.child(postId);
-        UploadTask uploadTask = contentImageRef.putBytes(bitmap_content);
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date());
 
-        Board boardItem = new Board("", "", "", "", et_newPostDescription.getText().toString(), bitmap, "", 0);
+        StorageReference contentImageRef = storageReference.child("Post/post_uri/"+ postId);
+
+        UploadTask uploadTask = contentImageRef.putFile(uri_newPostImage);
+
+        Board boardItem = new Board(postId, "", "", "", et_newPostDescription.getText().toString(), uri_newPostImage.toString(), timeStamp, 0);
 
         databaseReference.child(postId).setValue(boardItem).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
