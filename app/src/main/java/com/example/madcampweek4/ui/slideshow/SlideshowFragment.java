@@ -51,7 +51,6 @@ public class SlideshowFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_slideshow, container, false);
 
-
         calendarView=view.findViewById(R.id.calendarView);
         diaryTextView=view.findViewById(R.id.diaryTextView);
 
@@ -83,7 +82,13 @@ public class SlideshowFragment extends Fragment {
             }
         });
 
+
         calendarView.setSelectedDate(CalendarDay.today());
+        calendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
+        calendarView.addDecorator(new MySelectorDecorator(getActivity()));
+
+        OneDayDecorator oneDayDecorator=new OneDayDecorator();
+        calendarView.addDecorators(oneDayDecorator);
 //        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 //            @Override
 //            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
