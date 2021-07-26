@@ -1,7 +1,9 @@
 package com.example.madcampweek4.ui.slideshow;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +11,22 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.madcampweek4.LoginActivity;
+import com.example.madcampweek4.MainActivity;
 import com.example.madcampweek4.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -30,10 +42,16 @@ public class SlideshowFragment extends Fragment {
     public TextView diaryTextView,textView2,textView3;
     public EditText contextEditText;
 
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabaseRef;
+    String name, userID;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_slideshow, container, false);
+
 
         calendarView=view.findViewById(R.id.calendarView);
         diaryTextView=view.findViewById(R.id.diaryTextView);
@@ -48,9 +66,25 @@ public class SlideshowFragment extends Fragment {
         contextEditText=view.findViewById(R.id.contextEditText);
 
 
-        String name="name";
-        String userID="userID";
-        textView3.setText(name+"님의 달력 일기장");
+
+        // firebase
+        mFirebaseAuth= FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
+        mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
+
+        userID=firebaseUser.getUid();
+        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    name=String.valueOf(task.getResult().getValue());
+                    textView3.setText(name+"님의 달력 일기장");
+                }
+            }
+        });
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -66,6 +100,8 @@ public class SlideshowFragment extends Fragment {
                 checkDay(year,month,dayOfMonth,userID);
             }
         });
+
+
         save_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,8 +116,6 @@ public class SlideshowFragment extends Fragment {
 
             }
         });
-
-
         return view;
     }
 
