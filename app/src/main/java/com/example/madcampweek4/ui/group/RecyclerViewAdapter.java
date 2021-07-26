@@ -18,6 +18,7 @@ import com.example.madcampweek4.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,6 +62,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.tv_groupName.setText(groupData.get(position).getGroupName());
         holder.tv_groupInfo.setText(groupData.get(position).getGroupInfo());
 
+        HashMap<String,String> map = groupData.get(position).getUsers();
+        if( map!=null) {
+            String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
+            if(map.get(userId)!=null){
+                Log.d("recycler", userId);
+                holder.fb_joinGroup.setText("unjoin");
+            }else holder.fb_joinGroup.setText("Join");
+        }else holder.fb_joinGroup.setText("Join");
+
         holder.fb_joinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,13 +97,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             HashMap<String,Object> map1 =new HashMap<>();
                             map1.put(userId,userId);
                             groupRef.updateChildren(map1);
-
+                            holder.fb_joinGroup.setText("Unjoin");
                             Toast.makeText(v.getContext(),"Joined",Toast.LENGTH_SHORT).show();
                         }
                         else{
                             userRef.child(groupId).removeValue();
                             groupRef.child(userId).removeValue();
 
+                            holder.fb_joinGroup.setText("Join");
                             Toast.makeText(v.getContext(),"Unjoined",Toast.LENGTH_SHORT).show();
                         }
 
@@ -115,7 +126,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         TextView tv_groupName, tv_groupInfo;
         ImageView img_groupImage;
-        FloatingActionButton fb_joinGroup;
+        //FloatingActionButton fb_joinGroup;
+        ExtendedFloatingActionButton fb_joinGroup;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
