@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.madcampweek4.R;
 import com.example.madcampweek4.ui.group.Group;
 import com.example.madcampweek4.ui.group.RecyclerViewAdapter;
+import com.github.ybq.android.spinkit.style.CubeGrid;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,6 +57,7 @@ public class SearchFragment extends Fragment {
     private RecyclerView rv_searchGroup;
     private RecyclerViewAdapter recyclerViewAdapter;
     private FloatingActionButton fb_search;
+    private ProgressBar progressBar;
     private ArrayList<Group> groupItemList;
     private Uri selectImageUri;
 
@@ -75,6 +79,8 @@ public class SearchFragment extends Fragment {
         rv_searchGroup= view.findViewById(R.id.rv_groupSearch);
         fb_search = view.findViewById(R.id.fb_search);
         et_searchGroup=view.findViewById(R.id.et_searchGroup);
+        progressBar = view.findViewById(R.id.spin_kit_searchGroup);
+        progressBar.setIndeterminateDrawable(new CubeGrid());
 
         rv_searchGroup.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
 
