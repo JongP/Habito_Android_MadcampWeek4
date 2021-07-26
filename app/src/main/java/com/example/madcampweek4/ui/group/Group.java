@@ -1,10 +1,16 @@
 package com.example.madcampweek4.ui.group;
 
+import android.widget.LinearLayout;
+
+import java.util.HashMap;
+import java.util.List;
+
 public class Group {
     private String id;
     private String profile;
     private String groupName;
     private String groupInfo;
+    private HashMap<String,String> users;
 
     public Group(){
     }
@@ -52,5 +58,13 @@ public class Group {
 
     public void setGroupInfo(String groupInfo) {
         this.groupInfo = groupInfo;
+    }
+
+    public HashMap<String, String > getUsers() {
+        return users;
+    }
+
+    public void setUsers(HashMap<String, String> users) {
+        this.users = users;
     }
 }
