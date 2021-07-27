@@ -7,6 +7,7 @@ public class UserAccount {
     private String emailId;
     private String password;
     private String name;
+    private String profileURL;
     //별명, 프로필 이미지 등으로 확장 가능
 
     public UserAccount() { }
@@ -43,4 +44,11 @@ public class UserAccount {
         this.name = name;
     }
 
+    public String getProfileURL() {
+        return profileURL;
+    }
+
+    public void setProfileURL(String profileURL) {
+        this.profileURL = profileURL;
+    }
 }

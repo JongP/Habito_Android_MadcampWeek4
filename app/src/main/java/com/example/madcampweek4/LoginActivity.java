@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,22 +15,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.Api;
-import com.google.android.gms.common.api.GoogleApi;
+
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.common.internal.GoogleApiAvailabilityCache;
+
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -38,16 +45,28 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
+import com.facebook.FacebookSdk;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     private FirebaseAuth mFirebaseAuth; // firebase auth
     private DatabaseReference mDatabaseRef; //realtime db
     private EditText mEtEmail, mEtPwd;
+    private  String userId;
 
     private SignInButton btn_google;
+    private LoginButton btn_facebook;
     private GoogleApiClient googleApiClient;
     private static final int REQ_SIGN_GOOGLE=100;
+
+    private CallbackManager mCallbackManager;
 
     private String TAG ="LoginActivity";
 
@@ -67,16 +86,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.d(TAG, "user is not null");
             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("email", user.getEmail());
-            mDatabaseRef.child("UserAccount").child(user.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            userId=user.getUid();
+            updateUserToday();
+            mDatabaseRef.child("UserAccount").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if (!task.isSuccessful()) {
                         Log.e("firebase", "Error getting data", task.getException());
                     }
                     else {
-                        intent.putExtra("name", String.valueOf(task.getResult().getValue()));
+                        UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                        intent.putExtra("name", userAccount.getName());
                         // 여기는 일반 사용자 사진 가져오기!
-                        intent.putExtra("profileUrl", "일반");
+                        intent.putExtra("profileUrl", userAccount.getProfileURL());
                         startActivity(intent);
                         finish();
                     }
@@ -105,17 +127,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if (task.isSuccessful()){
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
+                            userId=firebaseUser.getUid();
+                            updateUserToday();
                             intent.putExtra("email", firebaseUser.getEmail());
-                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                                     if (!task.isSuccessful()) {
                                         Log.e("firebase", "Error getting data", task.getException());
                                     }
                                     else {
-                                        intent.putExtra("name", String.valueOf(task.getResult().getValue()));
+                                        UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                                        intent.putExtra("name", userAccount.getName());
                                         // 여기는 일반 사용자 사진 가져오기!
-                                        intent.putExtra("profileUrl", "일반");
+                                        intent.putExtra("profileUrl", userAccount.getProfileURL());
                                         startActivity(intent);
                                         finish();
                                     }
@@ -158,6 +183,32 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 startActivityForResult(intent, REQ_SIGN_GOOGLE);//인증 화면 절차 넘기고 다시 돌아오는
             }
         });
+
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        mCallbackManager=CallbackManager.Factory.create();
+
+        btn_facebook=(LoginButton)findViewById(R.id.btn_facebook);
+        btn_facebook.setReadPermissions("email", "public_profile");
+
+        // Callback registration
+        btn_facebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.d(TAG, "facebook:onError", exception);
+            }
+        });
     }
 
 
@@ -170,24 +221,40 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             if(result.isSuccess()){
                 GoogleSignInAccount gaccount=result.getSignInAccount();
                 resultGoogleLogin(gaccount);// 닉네임, 프로필사진Url, 이메일 주소 등
-
-
             }
         }
+        // Pass the activity result back to the Facebook SDK
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void resultGoogleLogin(GoogleSignInAccount gaccount) {
         AuthCredential credential= GoogleAuthProvider.getCredential(gaccount.getIdToken(), null);
+
+
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(LoginActivity.this, "로그인 성공!", Toast.LENGTH_SHORT).show();
+
+                            FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser(); // 현재 유저
+
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("name", String.valueOf(gaccount.getDisplayName()));
                             intent.putExtra("email", String.valueOf(gaccount.getEmail()));
                             intent.putExtra("profileUrl", String.valueOf(String.valueOf(gaccount.getPhotoUrl())));
+
+                            //google id로 이것저것 할 수 있긴 한데, 로그인할 때마다 생기는 단점이 있음
+//                            UserAccount account=new UserAccount();
+//                            account.setIdToken(firebaseUser.getUid());
+//                            account.setEmailId(gaccount.getEmail());
+//                            account.setName(gaccount.getDisplayName());
+//                            account.setProfileURL("");
+//
+//                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
+
+
                             startActivity(intent);
                             finish();
                         } else{
@@ -198,8 +265,150 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mFirebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                            Log.d("페이스북 로그인 됐니? ", user.getEmail());
+                            getProfile();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+    }
+
+    private void getProfile() {
+        try {
+            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            GraphRequest request = GraphRequest.newMeRequest(
+                    accessToken,
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        private String FBName, FBEmail, FBUUID;
+                        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+
+                        @Override
+                        public void onCompleted(
+                                JSONObject object,
+                                GraphResponse response) {
+                            try {
+                                String[] splitStr = object.getString("name").split("\\s+");
+                                FBName = splitStr[0];
+                                FBEmail = object.getString("email");
+                                FBUUID = object.getString("id");
+
+                                Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("name", FBName);//FBUUID);
+                                intent.putExtra("email", FBEmail);
+                                intent.putExtra("profileUrl", "페이스북");
+                                Log.d("페이스북 정보 : ", FBName +" "+FBEmail);
+
+                                //facebook id로 이것저것 할 수 있긴 한데, 로그인할 때마다 생기는 단점이 있음
+//                                UserAccount account=new UserAccount();
+//                                account.setIdToken(firebaseUser.getUid());
+//                                account.setEmailId(FBEmail);
+//                                account.setName(FBName);
+//                                account.setProfileURL("");
+//
+//                                mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
+
+
+                                startActivity(intent);
+                                finish();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,link,birthday,gender,email");
+            request.setParameters(parameters);
+            request.executeAsync();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private void updateUserToday(){
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        mDatabaseRef.child("UserAccount").child(userId).child("groups").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                HashMap<String,Object> groupMap = (HashMap<String, Object>) dataSnapshot.getValue();
+                if(groupMap==null || groupMap.isEmpty()){
+                    Login.setGroupNum(0);
+                }
+                else{
+                    Login.setGroupNum(groupMap.size());
+                }
+
+                mDatabaseRef.child("UserAccount").child(userId).child("posts/today").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue()!=null){
+                            HashMap<String,Object> map = (HashMap<String, Object>)dataSnapshot.getValue();
+                            //for new day
+                            if(map!=null&&map.get("date")!=null&&!map.get("date").equals(timeStamp)){
+                                double ratio=0;
+
+                                long postNum= (long) map.get("postNum");
+                                long groupNum=(long)map.get("groupNum");
+                                String pastDate = (String) map.get("date");
+
+                                Log.d(TAG, String.valueOf(postNum)+" "+String.valueOf(groupNum));
+
+                                if(groupNum!=0)  {
+                                    ratio = (double)postNum/groupNum;
+                                    Log.d(TAG, "ratio is "+String.valueOf(ratio));
+                                }
+                                HashMap<String,Object> ratioMap = new HashMap<>();
+                                ratioMap.put(pastDate,ratio);
+                                mDatabaseRef.child("UserAccount").child(userId).child("posts/ratios").updateChildren(ratioMap);
+
+                                Login.setPostNum(0);
+
+                                HashMap<String,Object> updateMap = new HashMap<>();
+                                updateMap.put("postNum",0);
+                                updateMap.put("date",timeStamp);
+                                updateMap.put("groupNum",Login.getGroupNum());
+                                mDatabaseRef.child("UserAccount").child(userId).child("posts/today").updateChildren(updateMap);
+
+                            }
+                        }else{
+                            //for new users
+                            HashMap<String,Object> map = new HashMap<>();
+                            map.put("date",timeStamp);
+                            map.put("postNum",0);
+                            map.put("groupNum",0);
+
+                            Login.setPostNum(0);
+                            mDatabaseRef.child("UserAccount").child(userId).child("posts/today").setValue(map);
+
+                        }
+                    }
+                });
+
+            }
+        });
 
     }
 }

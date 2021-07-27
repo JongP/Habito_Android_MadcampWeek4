@@ -109,6 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setEmailId(firebaseUser.getEmail());
                             account.setName(strName);
                             account.setPassword(strPwd);// ㄱㅊ
+                            account.setProfileURL("");
 
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
 

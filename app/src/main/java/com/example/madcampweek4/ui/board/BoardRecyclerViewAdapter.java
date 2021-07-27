@@ -1,6 +1,7 @@
 package com.example.madcampweek4.ui.board;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<BoardRecycler
     private LayoutInflater layoutInflater;
     private ArrayList<Board> boardData;
 
+    private String TAG ="myBoard";
+
 
     BoardRecyclerViewAdapter(Context context, ArrayList<Board> boardData){
         this.layoutInflater = LayoutInflater.from(context);
@@ -45,11 +48,15 @@ public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<BoardRecycler
           Glide.with(holder.itemView)
                 .load(boardData.get(position).getPost_uri())
                 .into(holder.iv_postImage);
-//        Glide.with(holder.itemView)
-//                .load(boardData.get(position).getUser_profilePic())
-//                .into(holder.civ_userProfile);
-        holder.tv_userId.setText(boardData.get(position).getUser_name());
-        holder.tv_postContent.setText(boardData.get(position).getPost_content());
+          String userProfileUrl= boardData.get(position).getUser_profilePic();
+          Log.d("Hello", userProfileUrl);
+          if(userProfileUrl!=null&& !userProfileUrl.equals("")){
+              Glide.with(holder.itemView)
+                      .load(userProfileUrl)
+                      .into(holder.civ_userProfile);
+          }
+          holder.tv_userId.setText(boardData.get(position).getUser_name());
+          holder.tv_postContent.setText(boardData.get(position).getPost_content());
 
 
         holder.tv_postDate.setText(boardData.get(position).getPost_date());

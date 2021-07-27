@@ -84,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         dialog = new Dialog(this);
 
-        if (!profileUrl.equals("일반")){
+        if (profileUrl!=null&&!profileUrl.equals("")){
             Glide.with(this).load(profileUrl).into(iv_profileUrl);
         } else{
             // 파베에 있는 거 가져오기

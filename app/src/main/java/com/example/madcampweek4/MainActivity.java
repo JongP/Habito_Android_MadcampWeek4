@@ -40,6 +40,8 @@ import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         // 기본 사진
         ImageView imageView=nav_header_view.findViewById(R.id.imageView);
 
-        if (!profileUrl.equals("일반")){
+        if (profileUrl!=null && !profileUrl.equals("")){
             Glide.with(this).load(profileUrl).into(imageView);
         } else{
             // 파베에 있는 거 가져오기
@@ -101,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Uri uri) {
                     Glide.with(getApplicationContext()).load(uri).into(imageView);
+                    HashMap<String,Object> userMap = new HashMap<>();
+                    userMap.put("profileURL",uri.toString());
+                    mDatabaseRef.child("UserAccount/"+uid).updateChildren(userMap);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

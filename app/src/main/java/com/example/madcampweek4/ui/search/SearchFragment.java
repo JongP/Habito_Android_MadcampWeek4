@@ -65,7 +65,7 @@ public class SearchFragment extends Fragment {
     private ImageView iv_groupProfile;
 
     private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference,todayGroupRef;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -91,6 +91,7 @@ public class SearchFragment extends Fragment {
 
         database= FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
         databaseReference = database.getReference("MadCampWeek4/Group"); //db Table 연동
+        todayGroupRef =database.getReference("MadCampWeek4/UserAccount");
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference().child("Group/profile");
