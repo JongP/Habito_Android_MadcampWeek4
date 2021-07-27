@@ -23,4 +23,10 @@
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 
+    <fragment
+        android:id="@+id/nav_aquarium"
+        android:name="com.example.madcampweek4.ui.aquarium.AquariumFragment"
+        android:label="Aquarium"
+        tools:layout="@layout/fragment_aquarium" />
+
 </navigation>

@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#E3E3E3</color>
+    <color name="sea">#6BD3EA</color>
 
     <!--colors for ui template-->
     <color name="colorPrimary">#0052D4</color>
