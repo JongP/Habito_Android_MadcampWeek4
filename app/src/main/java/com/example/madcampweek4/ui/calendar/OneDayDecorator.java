@@ -1,13 +1,10 @@
-package com.example.madcampweek4.ui.slideshow;
+package com.example.madcampweek4.ui.calendar;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 
-import com.example.madcampweek4.R;
-import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;

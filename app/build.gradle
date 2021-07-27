@@ -86,4 +86,7 @@ dependencies {
 
     //lottie animation
     implementation 'com.airbnb.android:lottie:3.7.2'
+
+    //facebook sdk
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 }

@@ -1,4 +1,4 @@
-package com.example.madcampweek4.ui.slideshow;
+package com.example.madcampweek4.ui.calendar;
 
 
 import android.app.Activity;
@@ -17,20 +17,20 @@ import java.util.HashSet;
 /**
  * Decorate several days with a dot
  */
-public class EventDecorator4_4 implements DayViewDecorator {
+public class EventDecorator1_4 implements DayViewDecorator {
 
     private final Drawable drawable;
     private int color;
     private HashSet<CalendarDay> dates=new HashSet<>();
     private double[] result_ratio;
 
-    public EventDecorator4_4(int color, Collection<CalendarDay> dates, double[] result_ratio, Activity context) {
-        drawable = context.getResources().getDrawable(R.drawable.more4_4);
+    public EventDecorator1_4(int color, Collection<CalendarDay> dates, double[] result_ratio, Activity context) {
+        drawable = context.getResources().getDrawable(R.drawable.more1_4);
         this.color = color;
         //this.dates = new HashSet<>(dates);
         this.result_ratio=result_ratio;
         for (int i=0;i<dates.size();i++){
-            if (result_ratio[i]>0.75&&result_ratio[i]<1.0){
+            if (result_ratio[i]>0&&result_ratio[i]<=0.25){
                 Log.d("필터 성공 ", dates.toArray()[i].toString()+" "+result_ratio[i]+" "+i);
                 this.dates.add((CalendarDay) dates.toArray()[i]);
             }

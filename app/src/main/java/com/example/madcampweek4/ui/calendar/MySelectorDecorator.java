@@ -1,4 +1,4 @@
-package com.example.madcampweek4.ui.slideshow;
+package com.example.madcampweek4.ui.calendar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
