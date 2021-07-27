@@ -1,4 +1,4 @@
-package com.example.madcampweek4.ui.slideshow;
+package com.example.madcampweek4.ui.calendar;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -52,7 +52,7 @@ public class SlideshowFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_slideshow, container, false);
+        View view=inflater.inflate(R.layout.fragment_calendar, container, false);
 
         // 해시맵 예시
         date_rate.put("2021,07,18", 0.0);date_rate.put("2021,07,20", 0.2);date_rate.put("2021,08,05", 0.3);date_rate.put("2021,08,18", 0.5);

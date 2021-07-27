@@ -19,8 +19,8 @@
 
     <fragment
         android:id="@+id/nav_calendar"
-        android:name="com.example.madcampweek4.ui.slideshow.SlideshowFragment"
+        android:name="com.example.madcampweek4.ui.calendar.SlideshowFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_calendar" />
 
 </navigation>
