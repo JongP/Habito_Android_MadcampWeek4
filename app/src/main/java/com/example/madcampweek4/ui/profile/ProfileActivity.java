@@ -1,7 +1,10 @@
 package com.example.madcampweek4.ui.profile;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +32,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
     private StorageReference storageReference;
 
     String name, email, profileUrl;
+    Dialog dialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         ImageView iv_profileUrl=findViewById(R.id.iv_profileUrl);
 
-
+        dialog = new Dialog(this);
 
         if (!profileUrl.equals("일반")){
             Glide.with(this).load(profileUrl).into(iv_profileUrl);
@@ -102,10 +107,10 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
 
-        final Button btn_update_pwd = findViewById(R.id.btn_update_pwd);
-        final Button btn_update_name=findViewById(R.id.btn_update_name);
-        final Button btn_logout = findViewById(R.id.btn_logout);
-        final Button btn_signout = findViewById(R.id.btn_signout);
+        final FloatingActionButton btn_update_pwd = findViewById(R.id.btn_update_pwd);
+        final FloatingActionButton btn_update_name=findViewById(R.id.btn_update_name);
+        final FloatingActionButton btn_logout = findViewById(R.id.btn_logout);
+        final FloatingActionButton btn_signout = findViewById(R.id.btn_signout);
 
 
         btn_logout.setOnClickListener(new View.OnClickListener() {
@@ -143,13 +148,18 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateName() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_name_update, null);
+//        View view = getLayoutInflater().inflate(R.layout.dialog_name_update, null);
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setView(view).show();
+//
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view).show();
+        dialog.setContentView(R.layout.dialog_name_update);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        final EditText et_name = view.findViewById(R.id.et_name);
-        Button btn_update_name = view.findViewById(R.id.btn_update_name);
+        Button btn_update_name = dialog.findViewById(R.id.btn_update_name);
+        final EditText et_name = dialog.findViewById(R.id.et_name);
+        ImageView iv_closeDialog = dialog.findViewById(R.id.iv_closeDialog);
 
         btn_update_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,23 +170,31 @@ public class ProfileActivity extends AppCompatActivity {
 
                 mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").setValue(EtName);
                 Toast.makeText(ProfileActivity.this, "이름 변경!", Toast.LENGTH_SHORT).show();
-
             }
         });
-
-
+        iv_closeDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private void updatePwd() {
         View view = getLayoutInflater().inflate(R.layout.dialog_pwd_update, null);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view).show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setView(view).show();
 
-        final EditText et_current_pwd=view.findViewById(R.id.et_current_pwd);
-        final EditText et_new_pwd = view.findViewById(R.id.et_new_pwd);
-        final EditText et_new_pwd_val = view.findViewById(R.id.et_new_pwd_val);
-        Button btn_update_pwd = view.findViewById(R.id.btn_update_pwd);
+        dialog.setContentView(R.layout.dialog_pwd_update);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        final EditText et_current_pwd=dialog.findViewById(R.id.et_current_pwd);
+        final EditText et_new_pwd = dialog.findViewById(R.id.et_new_pwd);
+        final EditText et_new_pwd_val = dialog.findViewById(R.id.et_new_pwd_val);
+        Button btn_update_pwd = dialog.findViewById(R.id.btn_update_pwd);
+        ImageView iv_closeDialog2 = dialog.findViewById(R.id.iv_closeDialog2);
 
         btn_update_pwd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,11 +233,15 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     }
                 });;
-
-
             }
         });
-
+        iv_closeDialog2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
     }
 }

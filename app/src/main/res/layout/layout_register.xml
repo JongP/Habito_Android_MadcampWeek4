@@ -31,35 +31,43 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
+            android:layout_marginTop="@dimen/signup_text_margin_top"
+            app:startIconDrawable="@drawable/outline_email_black_24dp">
+
             <EditText
-                style="@style/modifiedEditText"
                 android:id="@+id/et_email"
+                style="@style/modifiedEditText"
+                android:hint="Email"
                 android:inputType="text"
                 android:maxLines="1"
-                android:hint="Email"/>
+                android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
+            android:layout_marginTop="@dimen/signup_text_margin_top"
+            app:startIconDrawable="@drawable/outline_perm_identity_black_24dp">
             <EditText
                 style="@style/modifiedEditText"
                 android:id="@+id/et_name"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:hint="Name"/>
+                android:hint="Name"
+                android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
+            android:layout_marginTop="@dimen/signup_text_margin_top"
+            app:startIconDrawable="@drawable/outline_lock_black_24dp">
+
             <EditText
-                style="@style/modifiedEditText"
                 android:id="@+id/et_pwd"
+                style="@style/modifiedEditText"
                 android:hint="Password"
+                android:inputType="textPassword"
                 android:maxLines="1"
-                android:inputType="textPassword"/>
+                android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
