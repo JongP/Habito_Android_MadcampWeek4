@@ -367,7 +367,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if(dataSnapshot.getValue()!=null){
                             HashMap<String,Object> map = (HashMap<String, Object>)dataSnapshot.getValue();
                             //for new day
-                            if(!map.get("date").equals(timeStamp)){
+                            if(map!=null&&map.get("date")!=null&&!map.get("date").equals(timeStamp)){
                                 double ratio=0;
 
                                 long postNum= (long) map.get("postNum");

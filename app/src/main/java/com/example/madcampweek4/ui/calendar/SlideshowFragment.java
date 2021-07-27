@@ -54,20 +54,6 @@ public class SlideshowFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        // 해시맵 예시
-        date_rate.put("2021,07,18", 0.0);date_rate.put("2021,07,20", 0.2);date_rate.put("2021,08,05", 0.3);date_rate.put("2021,08,18", 0.5);
-        date_rate.put("2021,08,19", 0.6);date_rate.put("2021,08,20", 0.78);date_rate.put("2021,08,28", 0.9);date_rate.put("2021,08,29", 1.0);
-
-
-       result= date_rate.keySet().toArray(new String[0]);
-       result_ratio=new double[result.length];
-       Collection<Double> ratio_col=date_rate.values();
-       for (int i=0;i<ratio_col.size();i++){
-           result_ratio[i]= (double) ratio_col.toArray()[i];
-       }
-
-        ////// 해시맵 처리 여기까지
-
 
         calendarView=view.findViewById(R.id.calendarView);
         textView3=view.findViewById(R.id.tv_caltitle);
@@ -77,6 +63,93 @@ public class SlideshowFragment extends Fragment {
         mFirebaseAuth= FirebaseAuth.getInstance();
         FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
+
+
+        // 해시맵 예시
+//        date_rate.put("2021,07,18", 0.0);date_rate.put("2021,07,20", 0.2);date_rate.put("2021,08,05", 0.3);date_rate.put("2021,08,18", 0.5);
+//        date_rate.put("2021,08,19", 0.6);date_rate.put("2021,08,20", 0.78);date_rate.put("2021,08,28", 0.9);date_rate.put("2021,08,29", 1.0);
+
+        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("posts/ratios").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    date_rate= (HashMap<String, Double>) task.getResult().getValue();
+
+                    if (date_rate!=null) {
+                        result = date_rate.keySet().toArray(new String[0]);
+                        result_ratio = new double[result.length];
+                        Collection<Double> ratio_col = date_rate.values();
+                        for (int i = 0; i < ratio_col.size(); i++) {
+                            if (ratio_col.toArray()[i].getClass().getName().equals("java.lang.Long")){
+                                if (ratio_col.toArray()[i].equals(0)){
+                                    result_ratio[i]=0.0;
+                                } else if (ratio_col.toArray()[i].equals(1)){
+                                    result_ratio[i]=1.0;
+                                }
+                            }
+                            else {
+                                result_ratio[i] = (double)ratio_col.toArray()[i];
+                            }
+                        }
+                        ////// 해시맵 처리 여기까지
+
+                        calendarView.setSelectedDate(CalendarDay.today());
+                        calendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
+                        calendarView.addDecorator(new MySelectorDecorator(getActivity()));
+
+                        // 오늘 날짜 색
+                        int colorPrimary = getResources().getColor(R.color.colorPrimaryDark);
+
+                        OneDayDecorator oneDayDecorator = new OneDayDecorator(colorPrimary);
+                        calendarView.addDecorators(oneDayDecorator);
+
+                        new ApiSimulator(result).executeOnExecutor(Executors.newSingleThreadExecutor());
+
+                        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+                            @Override
+                            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                                TextView tv_ratio = view.findViewById(R.id.tv_ratio);
+                                int Year = date.getYear();
+                                int Month = date.getMonth() + 1;
+                                int Day = date.getDay();
+                                String selectedDate = null;
+                                if (Month < 10) {
+                                    if (Day < 10) {
+                                        selectedDate = Year + "-0" + Month + "-0" + Day;
+                                    } else {
+                                        selectedDate = Year + "-0" + Month + "-" + Day;
+                                    }
+                                } else if (Month >= 10 && Month <= 12) {
+                                    if (Day < 10) {
+                                        selectedDate = Year + "-" + Month + "-0" + Day;
+                                    } else {
+                                        selectedDate = Year + "-" + Month + "-" + Day;
+                                    }
+                                }
+
+                                //Toast.makeText(getActivity(), selectedDate+" selected", Toast.LENGTH_SHORT).show();
+
+                                if (date_rate.get(selectedDate) != null) {
+                                    String ach_rate = date_rate.get(selectedDate).toString();
+                                    tv_ratio.setText("The achivement rate of \n" + selectedDate + "\nis " + ach_rate);
+                                } else {
+                                    tv_ratio.setText("No achivments found");
+                                }
+
+
+                            }
+                        });
+                    }
+
+
+
+                }
+            }
+        });
+
 
         userID=firebaseUser.getUid();
         mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -92,54 +165,6 @@ public class SlideshowFragment extends Fragment {
             }
         });
 
-
-        calendarView.setSelectedDate(CalendarDay.today());
-        calendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
-        calendarView.addDecorator(new MySelectorDecorator(getActivity()));
-
-        // 오늘 날짜 색
-        int colorPrimary = getResources().getColor(R.color.colorPrimaryDark);
-
-        OneDayDecorator oneDayDecorator=new OneDayDecorator(colorPrimary);
-        calendarView.addDecorators(oneDayDecorator);
-
-
-        new ApiSimulator(result).executeOnExecutor(Executors.newSingleThreadExecutor());
-
-        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                TextView tv_ratio=view.findViewById(R.id.tv_ratio);
-                int Year = date.getYear();
-                int Month = date.getMonth() + 1;
-                int Day = date.getDay();
-                String selectedDate = null;
-                if (Month<10){
-                    if(Day<10) {
-                        selectedDate = Year + ",0" + Month + ",0" + Day;
-                    } else{
-                        selectedDate = Year + ",0" + Month + "," + Day;
-                    }
-                } else if (Month>=10 && Month<=12){
-                    if(Day<10) {
-                        selectedDate = Year + "," + Month + ",0" + Day;
-                    } else{
-                        selectedDate = Year + "," + Month + "," + Day;
-                    }
-                }
-
-                //Toast.makeText(getActivity(), selectedDate+" selected", Toast.LENGTH_SHORT).show();
-
-                if (date_rate.get(selectedDate)!=null){
-                    String ach_rate=date_rate.get(selectedDate).toString();
-                    tv_ratio.setText("The achivement rate of \n"+selectedDate+"\nis "+ach_rate);
-                }else{
-                    tv_ratio.setText("No achivments found");
-                }
-
-
-            }
-        });
 
         return view;
     }
@@ -170,7 +195,7 @@ public class SlideshowFragment extends Fragment {
             for(int i = 0 ; i < Time_Result.length+1 ; i++){
                 CalendarDay day = CalendarDay.from(calendar);
                 if (i>=0 && i<Time_Result.length){
-                    String[] time = Time_Result[i].split(",");
+                    String[] time = Time_Result[i].split("-");
                     int year = Integer.parseInt(time[0]);
                     int month = Integer.parseInt(time[1]);
                     int dayy = Integer.parseInt(time[2]);
