@@ -10,11 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.madcampweek4.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -38,15 +42,18 @@ public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<BoardRecycler
 
     public void onBindViewHolder(@NonNull @NotNull BoardRecyclerViewAdapter.ViewHolder holder, int position) {
         //bind the textview with data received
-//        Glide.with(holder.itemView)
-//                .load(boardData.get(position).getPost_content())
-//                .into(holder.iv_postImage);
+          Glide.with(holder.itemView)
+                .load(boardData.get(position).getPost_uri())
+                .into(holder.iv_postImage);
 //        Glide.with(holder.itemView)
 //                .load(boardData.get(position).getUser_profilePic())
 //                .into(holder.civ_userProfile);
-        holder.tv_userId.setText(boardData.get(position).getUser_id());
+        holder.tv_userId.setText(boardData.get(position).getUser_name());
         holder.tv_postContent.setText(boardData.get(position).getPost_content());
+
+
         holder.tv_postDate.setText(boardData.get(position).getPost_date());
+
     }
 
     public int getItemCount() {

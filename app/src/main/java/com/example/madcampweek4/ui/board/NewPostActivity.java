@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.karumi.dexter.Dexter;
@@ -60,6 +61,8 @@ public class NewPostActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private String groupId,groupName;
+
+    private  String TAG = "NewPostActivityTAG";
 
     ImageView iv_newPostImage;
     EditText et_newPostDescription;
@@ -170,12 +173,27 @@ public class NewPostActivity extends AppCompatActivity {
                 }else{
                     StorageReference contentImageRef = storageReference.child("Post/post_uri/"+ postId);
                     UploadTask uploadTask = contentImageRef.putFile(uri_newPostImage);
-                    @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date());
+                    uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<UploadTask.TaskSnapshot> task) {
+                            Toast.makeText(getApplicationContext(),"post uploaded",Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "post upload complete");
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
+                            Log.d(TAG, snapshot.toString());
+                            Log.d(TAG,String.valueOf(snapshot.getBytesTransferred()));
+                            Log.d(TAG,String.valueOf(snapshot.getTotalByteCount()));
+                        }
+                    });
+
+                    @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm").format(new Date());
 
                     userName = String.valueOf(task.getResult().getValue());
                     Log.d("아이디 받는 함수 성공", "제발 " + userName);
 
-                    boardItem = new Board(postId, userName, "", groupId, et_newPostDescription.getText().toString(), et_newPostDescription.getText().toString(), uri_newPostImage.toString(), timeStamp, 0);
+                    boardItem = new Board(postId, uid, userName,"",groupId, et_newPostDescription.getText().toString(), "", timeStamp, 0);
 
                     databaseReference.child(postId).setValue(boardItem).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
