@@ -68,6 +68,9 @@ public class GroupFragment extends Fragment {
             @Override
             public void onItemClick(View v, int pos) {
                 Intent intent = new Intent(getActivity(), BoardActivity.class);
+                String groupId = groupData.get(pos).getId();
+                intent.putExtra("groupId",groupId);
+                intent.putExtra("groupName",groupData.get(pos).getGroupName());
                 startActivity(intent);
             }
         });
@@ -96,6 +99,7 @@ public class GroupFragment extends Fragment {
                             });
                             return;
                         });
+                        progressBar.setVisibility(View.GONE);
                     }else{
                         Toast.makeText(getContext(),"This should not happen",Toast.LENGTH_SHORT).show();
                     }

@@ -44,9 +44,9 @@ public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<BoardRecycler
 //        Glide.with(holder.itemView)
 //                .load(boardData.get(position).getUser_profilePic())
 //                .into(holder.civ_userProfile);
-//        holder.tv_userId.setText(boardData.get(position).getUser_id());
-//        holder.tv_postContent.setText(boardData.get(position).getPost_content());
-//        holder.tv_postDate.setText(boardData.get(position).getPost_date());
+        holder.tv_userId.setText(boardData.get(position).getUser_id());
+        holder.tv_postContent.setText(boardData.get(position).getPost_content());
+        holder.tv_postDate.setText(boardData.get(position).getPost_date());
     }
 
     public int getItemCount() {

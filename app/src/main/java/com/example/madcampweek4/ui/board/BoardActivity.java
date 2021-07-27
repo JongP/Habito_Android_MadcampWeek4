@@ -29,35 +29,45 @@ public class BoardActivity extends AppCompatActivity {
     private ArrayList<Board> boardData;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private String groupId;
+
+    private String TAG="BoardActTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
 
+        Intent intent = getIntent();
+        groupId=intent.getStringExtra("groupId");
+        String groupName = intent.getStringExtra("groupName");
+        Log.d(TAG, groupId);
+
         ActionBar ab = (BoardActivity.this).getSupportActionBar();
-        ab.setTitle("그룹이름 받아와ㅏㅏㅏ");
+        ab.setTitle(groupName);
 
 
         boardData= new ArrayList<>();
-//        boardData.add(new Board("", "user1","","group1", "post content1", "", "", 1));
-//        boardData.add(new Board("", "user2","","group2", "post content2", "", "", 1));
-//        boardData.add(new Board("", "user3","","group3", "post content3", "", "", 1));
 
         recyclerView = findViewById(R.id.groupRecyclerView);
         recyclerView.setHasFixedSize(true);  //기존성능 강화
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         database=FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
-        databaseReference = database.getReference("MadCampWeek4/Post"); //db Table 연동 : 오빠
+        databaseReference = database.getReference("MadCampWeek4/Post/"+groupId); //db Table 연동 : 오빠
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 //getting data from firebase
                 boardData.clear();
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    Board board = snapshot.getValue(Board.class);
+                    Board board = dataSnapshot.getValue(Board.class);
+                    Log.d(TAG, "snapshot value: "+dataSnapshot.getValue().toString());
+                    Log.d(TAG, "class value: " + board.getPost_content());
+                    Log.d(TAG, "class value: " + board.getContent());
+
                     boardData.add(board);
                 }
                 boardRecyclerViewAdapter.notifyDataSetChanged();
@@ -77,7 +87,10 @@ public class BoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BoardActivity.this,NewPostActivity.class);
+                intent.putExtra("groupId",groupId);
+                intent.putExtra("groupName",groupName);
                 startActivity(intent);
+                finish();
             }
         });
 
