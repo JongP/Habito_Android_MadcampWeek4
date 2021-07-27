@@ -6,10 +6,11 @@ import android.net.Uri;
 public class Board {
     private String post_id;
     private String user_id;
+    private String user_name;
     private String user_profilePic;
     private String group_id;
     private String post_content;
-    private String content;
+
     private String post_uri;
     private String post_date;
     private int like;
@@ -18,6 +19,7 @@ public class Board {
 
     public Board(String post_id,
                  String user_id,
+                 String user_name,
                  String user_profilePic,
                  String group_id,
                  String post_content,
@@ -26,6 +28,7 @@ public class Board {
                  int like ){
         this.post_id = post_id;
         this.user_id = user_id;
+        this.user_name=user_name;
         this.user_profilePic = user_profilePic;
         this.group_id = group_id;
         this.post_content = post_content;
@@ -34,17 +37,6 @@ public class Board {
         this.like = like;
     }
 
-    public Board(String post_id, String user_id, String user_profilePic, String group_id, String post_content, String content, String post_uri, String post_date, int like) {
-        this.post_id = post_id;
-        this.user_id = user_id;
-        this.user_profilePic = user_profilePic;
-        this.group_id = group_id;
-        this.post_content = post_content;
-        this.content = content;
-        this.post_uri = post_uri;
-        this.post_date = post_date;
-        this.like = like;
-    }
 
     public String getPost_id() {
         return post_id;
@@ -110,11 +102,11 @@ public class Board {
         this.like = like;
     }
 
-    public String getContent() {
-        return content;
+    public String getUser_name() {
+        return user_name;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 }

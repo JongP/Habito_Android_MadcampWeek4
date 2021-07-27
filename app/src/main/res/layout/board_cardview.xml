@@ -58,7 +58,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginStart="10dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/tv_postDate"
@@ -82,7 +83,8 @@
                         android:id="@+id/tv_postContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_marginVertical="10dp"
+                        android:layout_marginLeft="25dp"
                         android:text="Post Content1"
                         android:textSize="16sp"/>
 
