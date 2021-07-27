@@ -9,10 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +48,11 @@ public class SlideshowFragment extends Fragment {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
     String name, userID;
+
+    //앞에서 받아오기~
+    String[] result= {"2021,07,18","2021,07,20","2021,08,05","2021,08,18", "2021,08,19", "2021,08,20", "2021,08,28", "2021,08,29"};
+    double[] result_ratio={0.0,0.2,0.3,0.5, 0.6,0.78,0.9, 1.0};
+
 
 
     @Nullable
@@ -96,8 +99,6 @@ public class SlideshowFragment extends Fragment {
         OneDayDecorator oneDayDecorator=new OneDayDecorator();
         calendarView.addDecorators(oneDayDecorator);
 
-
-        String[] result = {"2021,07,18","2021,07,20","2021,08,05","2021,08,18", "2021,08,19", "2021,08,20", "2021,08,28"};
 
         new ApiSimulator(result).executeOnExecutor(Executors.newSingleThreadExecutor());
 
@@ -151,7 +152,7 @@ public class SlideshowFragment extends Fragment {
 
             /*특정날짜 달력에 점표시해주는곳*/
             /*월은 0이 1월 년,일은 그대로*/
-            //string 문자열인 Time_Result 을 받아와서 ,를 기준으로 자르고 string을 int 로 변환
+            // string 문자열인 Time_Result 을 받아와서 ,를 기준으로 자르고 string을 int 로 변환
 
             Calendar calendar = Calendar.getInstance();
             ArrayList<CalendarDay> dates = new ArrayList<>();
@@ -164,34 +165,31 @@ public class SlideshowFragment extends Fragment {
                     int year = Integer.parseInt(time[0]);
                     int month = Integer.parseInt(time[1]);
                     int dayy = Integer.parseInt(time[2]);
-
                     calendar.set(year,month-1,dayy);
                     Log.d("고른 날짜22 ", day.toString());
                 }
                 if (i>0) {
                     dates.add(day);
                 }
-
-
             }
 
             for(int i = 0 ; i < dates.size() ; i ++){
                 Log.d("고른 날짜들33 ", dates.get(i).toString());
             }
-
             return dates;
         }
         @Override
         protected void onPostExecute(@NonNull List<CalendarDay> calendarDays) {
             super.onPostExecute(calendarDays);
-
-            calendarView.addDecorator(new EventDecorator(Color.GREEN, calendarDays,getActivity()));
+            calendarView.addDecorators(new EventDecorator0_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
+                    new EventDecorator1_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
+                    new EventDecorator2_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
+                    new EventDecorator3_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
+                    new EventDecorator4_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
+                    new EventDecorator5_4(Color.GREEN, calendarDays, result_ratio, getActivity()));
+            Log.d("필터 하려구 숫자", result_ratio.toString());
         }
-
-
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
