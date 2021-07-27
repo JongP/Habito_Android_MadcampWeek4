@@ -1,6 +1,5 @@
 package com.example.madcampweek4.ui.slideshow;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,8 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,9 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -36,16 +34,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-import static android.content.Context.MODE_NO_LOCALIZED_COLLATORS;
 
 public class SlideshowFragment extends Fragment {
 
-    public String fname=null;
-    public String str=null;
     public MaterialCalendarView calendarView;
-    public Button cha_Btn,del_Btn,save_Btn;
-    public TextView diaryTextView,textView2,textView3;
-    public EditText contextEditText;
+    public TextView textView3;
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
@@ -77,16 +70,8 @@ public class SlideshowFragment extends Fragment {
 
 
         calendarView=view.findViewById(R.id.calendarView);
-        diaryTextView=view.findViewById(R.id.diaryTextView);
+        textView3=view.findViewById(R.id.tv_caltitle);
 
-        save_Btn=view.findViewById(R.id.save_Btn);
-        del_Btn=view.findViewById(R.id.del_Btn);
-        cha_Btn=view.findViewById(R.id.cha_Btn);
-
-        textView2=view.findViewById(R.id.textView2);
-        textView3=view.findViewById(R.id.textView3);
-
-        contextEditText=view.findViewById(R.id.contextEditText);
 
         // firebase
         mFirebaseAuth= FirebaseAuth.getInstance();
@@ -112,11 +97,49 @@ public class SlideshowFragment extends Fragment {
         calendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
         calendarView.addDecorator(new MySelectorDecorator(getActivity()));
 
-        OneDayDecorator oneDayDecorator=new OneDayDecorator();
+        // 오늘 날짜 색
+        int colorPrimary = getResources().getColor(R.color.colorPrimaryDark);
+
+        OneDayDecorator oneDayDecorator=new OneDayDecorator(colorPrimary);
         calendarView.addDecorators(oneDayDecorator);
 
 
         new ApiSimulator(result).executeOnExecutor(Executors.newSingleThreadExecutor());
+
+        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                TextView tv_ratio=view.findViewById(R.id.tv_ratio);
+                int Year = date.getYear();
+                int Month = date.getMonth() + 1;
+                int Day = date.getDay();
+                String selectedDate = null;
+                if (Month<10){
+                    if(Day<10) {
+                        selectedDate = Year + ",0" + Month + ",0" + Day;
+                    } else{
+                        selectedDate = Year + ",0" + Month + "," + Day;
+                    }
+                } else if (Month>=10 && Month<=12){
+                    if(Day<10) {
+                        selectedDate = Year + "," + Month + ",0" + Day;
+                    } else{
+                        selectedDate = Year + "," + Month + "," + Day;
+                    }
+                }
+
+                //Toast.makeText(getActivity(), selectedDate+" selected", Toast.LENGTH_SHORT).show();
+
+                if (date_rate.get(selectedDate)!=null){
+                    String ach_rate=date_rate.get(selectedDate).toString();
+                    tv_ratio.setText("The achivement rate of \n"+selectedDate+"\nis "+ach_rate);
+                }else{
+                    tv_ratio.setText("No achivments found");
+                }
+
+
+            }
+        });
 
         return view;
     }
@@ -166,7 +189,8 @@ public class SlideshowFragment extends Fragment {
         @Override
         protected void onPostExecute(@NonNull List<CalendarDay> calendarDays) {
             super.onPostExecute(calendarDays);
-            calendarView.addDecorators(new EventDecorator0_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
+            calendarView.addDecorators(
+                    new EventDecorator0_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
                     new EventDecorator1_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
                     new EventDecorator2_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
                     new EventDecorator3_4(Color.GREEN, calendarDays, result_ratio, getActivity()),
