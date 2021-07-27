@@ -59,6 +59,7 @@ public class NewPostActivity extends AppCompatActivity {
     private DatabaseReference databaseReference, mDatabase;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private String groupId,groupName;
 
     ImageView iv_newPostImage;
     EditText et_newPostDescription;
@@ -72,13 +73,17 @@ public class NewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
+        Intent intent=getIntent();
+        groupId=intent.getStringExtra("groupId");
+        groupName=intent.getStringExtra("groupName");
+
         ActionBar ab = (NewPostActivity.this).getSupportActionBar();
         ab.setTitle("New Post");
 
         iv_newPostImage = (ImageView)findViewById(R.id.iv_newPostImage);
 
         database= FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
-        databaseReference = database.getReference("MadCampWeek4/Post"); //realtime database
+        databaseReference = database.getReference("MadCampWeek4/Post/"+groupId); //realtime database
 
         storage = FirebaseStorage.getInstance();  //for image
         storageReference = storage.getReference();
@@ -110,7 +115,11 @@ public class NewPostActivity extends AppCompatActivity {
             public void onClick(View v) {
                 insertData();
                 Intent intent = new Intent(NewPostActivity.this,BoardActivity.class);
+                intent.putExtra("groupId",groupId);
+                intent.putExtra("groupName",groupName);
+
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -166,7 +175,7 @@ public class NewPostActivity extends AppCompatActivity {
                     userName = String.valueOf(task.getResult().getValue());
                     Log.d("아이디 받는 함수 성공", "제발 " + userName);
 
-                    boardItem = new Board(postId, userName, "", "", et_newPostDescription.getText().toString(), uri_newPostImage.toString(), timeStamp, 0);
+                    boardItem = new Board(postId, userName, "", groupId, et_newPostDescription.getText().toString(), et_newPostDescription.getText().toString(), uri_newPostImage.toString(), timeStamp, 0);
 
                     databaseReference.child(postId).setValue(boardItem).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
