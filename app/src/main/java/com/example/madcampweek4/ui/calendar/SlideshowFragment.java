@@ -38,11 +38,11 @@ import java.util.concurrent.Executors;
 public class SlideshowFragment extends Fragment {
 
     public MaterialCalendarView calendarView;
-    public TextView textView3;
+    public TextView tv_caltitle;
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
-    String name, userID;
+    String name, userID, ach_rate;
     String[] result;
     double[] result_ratio;
 
@@ -54,16 +54,13 @@ public class SlideshowFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_calendar, container, false);
 
-
         calendarView=view.findViewById(R.id.calendarView);
-        textView3=view.findViewById(R.id.tv_caltitle);
-
+        tv_caltitle =view.findViewById(R.id.tv_caltitle);
 
         // firebase
         mFirebaseAuth= FirebaseAuth.getInstance();
         FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
-
 
         // 해시맵 예시
 //        date_rate.put("2021,07,18", 0.0);date_rate.put("2021,07,20", 0.2);date_rate.put("2021,08,05", 0.3);date_rate.put("2021,08,18", 0.5);
@@ -84,17 +81,23 @@ public class SlideshowFragment extends Fragment {
                         Collection<Double> ratio_col = date_rate.values();
                         for (int i = 0; i < ratio_col.size(); i++) {
                             if (ratio_col.toArray()[i].getClass().getName().equals("java.lang.Long")){
-                                if (ratio_col.toArray()[i].equals(0)){
+                                if ((long)ratio_col.toArray()[i]==0){
                                     result_ratio[i]=0.0;
-                                } else if (ratio_col.toArray()[i].equals(1)){
+                                } else if ((long)ratio_col.toArray()[i]==1){
                                     result_ratio[i]=1.0;
                                 }
-                            }
-                            else {
+                            }else {
                                 result_ratio[i] = (double)ratio_col.toArray()[i];
                             }
                         }
                         ////// 해시맵 처리 여기까지
+
+                        String str="";
+                        for(int i=0;i<result_ratio.length;i++){
+                            str+=result_ratio[i]+", ";
+                        }
+                        Log.d("비율 전체", str);
+                        Log.d("비율 전체1", ""+result_ratio.length);
 
                         calendarView.setSelectedDate(CalendarDay.today());
                         calendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
@@ -131,25 +134,24 @@ public class SlideshowFragment extends Fragment {
                                 }
 
                                 //Toast.makeText(getActivity(), selectedDate+" selected", Toast.LENGTH_SHORT).show();
-
                                 if (date_rate.get(selectedDate) != null) {
-                                    String ach_rate = date_rate.get(selectedDate).toString();
+                                    if (String.valueOf(date_rate.get(selectedDate)).equals("0")){
+                                        ach_rate="0.0";
+                                    } else if (String.valueOf(date_rate.get(selectedDate)).equals("1")){
+                                        ach_rate="1.0";
+                                    } else {
+                                        ach_rate = date_rate.get(selectedDate).toString();
+                                    }
                                     tv_ratio.setText("The achivement rate of \n" + selectedDate + "\nis " + ach_rate);
                                 } else {
                                     tv_ratio.setText("No achivments found");
                                 }
-
-
                             }
                         });
                     }
-
-
-
                 }
             }
         });
-
 
         userID=firebaseUser.getUid();
         mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -160,11 +162,10 @@ public class SlideshowFragment extends Fragment {
                 }
                 else {
                     name=String.valueOf(task.getResult().getValue());
-                    textView3.setText(name+"님의 달력 일기장");
+                    tv_caltitle.setText(name+"님의 달력 일기장");
                 }
             }
         });
-
 
         return view;
     }
@@ -228,6 +229,5 @@ public class SlideshowFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
 }
 

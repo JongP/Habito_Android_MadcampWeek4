@@ -31,7 +31,7 @@ public class EventDecorator0_4 implements DayViewDecorator {
         //this.dates = new HashSet<>(dates);
         this.result_ratio=result_ratio;
         for (int i=0;i<dates.size();i++){
-            if (result_ratio[i]==0){
+            if (result_ratio[i]==0.0){
                 Log.d("필터 성공 ", dates.toArray()[i].toString()+" "+result_ratio[i]+" "+i);
                 this.dates.add((CalendarDay) dates.toArray()[i]);
             }
