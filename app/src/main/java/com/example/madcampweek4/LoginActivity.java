@@ -2,6 +2,7 @@ package com.example.madcampweek4;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -61,6 +63,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        ActionBar ab = getSupportActionBar();
+        ab.hide();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         mFirebaseAuth=FirebaseAuth.getInstance();
@@ -90,10 +94,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
 
 
-        Button btn_register=findViewById(R.id.btn_register);
-        Button btn_login=findViewById(R.id.btn_login);
-
-
+        TextView tv_register=findViewById(R.id.tv_register);
+        Button btn_login = findViewById(R.id.btn_login);
 
 
         mEtEmail=findViewById(R.id.et_email);
@@ -140,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
         // 회원 가입 처리
-        btn_register.setOnClickListener(new View.OnClickListener() {
+        tv_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(LoginActivity.this, RegisterActivity.class);

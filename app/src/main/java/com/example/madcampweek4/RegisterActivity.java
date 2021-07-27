@@ -3,6 +3,7 @@ package com.example.madcampweek4;
 import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentResolver;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.madcampweek4.databinding.ActivityMainBinding;
@@ -43,22 +45,22 @@ public class RegisterActivity extends AppCompatActivity {
     private StorageReference storageReference;
 
     private EditText mEtEmail, mEtPwd, mEtName;
-    private Button mBtnRegister;
+    private TextView mBtnRegister;
     private ImageView img_profile;
     public Uri imageUri;
 
     String strEmail, strPwd, strName;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        ActionBar ab = getSupportActionBar();
+        ab.hide();
+
         storage=FirebaseStorage.getInstance();
         storageReference=storage.getReference();
-
 
         mFirebaseAuth=FirebaseAuth.getInstance();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
