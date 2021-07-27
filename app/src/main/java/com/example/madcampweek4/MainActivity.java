@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         // 기본 사진
         ImageView imageView=nav_header_view.findViewById(R.id.imageView);
 
-        if (!profileUrl.equals("일반")){
+        if (profileUrl!=null && !profileUrl.equals("")){
             Glide.with(this).load(profileUrl).into(imageView);
         } else{
             // 파베에 있는 거 가져오기
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(Uri uri) {
                     Glide.with(getApplicationContext()).load(uri).into(imageView);
                     HashMap<String,Object> userMap = new HashMap<>();
-                    userMap.put("profile",uri.toString());
+                    userMap.put("profileURL",uri.toString());
                     mDatabaseRef.child("UserAccount/"+uid).updateChildren(userMap);
                 }
             }).addOnFailureListener(new OnFailureListener() {

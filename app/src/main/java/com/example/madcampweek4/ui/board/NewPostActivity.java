@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.madcampweek4.Login;
 import com.example.madcampweek4.R;
+import com.example.madcampweek4.UserAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -165,9 +166,9 @@ public class NewPostActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         userDatabase = database.getReference("MadCampWeek4/UserAccount/"+uid);
         //Log.d("아이디 이름 받기 성공", "제발 "+uid);
-        DatabaseReference name = userDatabase.child("name");
+        //DatabaseReference name = userDatabase.child("name");
 
-        name.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        userDatabase.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                 if(!task.isSuccessful()){
@@ -176,27 +177,15 @@ public class NewPostActivity extends AppCompatActivity {
                 }else{
                     StorageReference contentImageRef = storageReference.child("Post/post_uri/"+ postId);
                     UploadTask uploadTask = contentImageRef.putFile(uri_newPostImage);
-                    uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull @NotNull Task<UploadTask.TaskSnapshot> task) {
-                            Toast.makeText(getApplicationContext(),"post uploaded",Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "post upload complete");
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
-                            Log.d(TAG, snapshot.toString());
-                            Log.d(TAG,String.valueOf(snapshot.getBytesTransferred()));
-                            Log.d(TAG,String.valueOf(snapshot.getTotalByteCount()));
-                        }
-                    });
+
 
                     @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
 
-                    userName = String.valueOf(task.getResult().getValue());
-                    Log.d("아이디 받는 함수 성공", "제발 " + userName);
+                    UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                    userName = userAccount.getName();
+                    //Log.d("아이디 받는 함수 성공", "제발 " + userName);
 
-                    boardItem = new Board(postId, uid, userName,"",groupId, et_newPostDescription.getText().toString(), "", timeStamp, 0);
+                    boardItem = new Board(postId, uid, userName,userAccount.getProfileURL(),groupId, et_newPostDescription.getText().toString(), "", timeStamp, 0);
 
                     databaseReference.child(postId).setValue(boardItem).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -206,7 +195,6 @@ public class NewPostActivity extends AppCompatActivity {
                             HashMap<String,Object> todayMap = new HashMap<>();
                             todayMap.put("postNum",Login.getPostNum());
                             userDatabase.child("posts/today").updateChildren(todayMap);
-
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override

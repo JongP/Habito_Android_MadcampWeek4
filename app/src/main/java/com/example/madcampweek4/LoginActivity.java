@@ -76,17 +76,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             intent.putExtra("email", user.getEmail());
             userId=user.getUid();
             updateUserToday();
-            mDatabaseRef.child("UserAccount").child(userId).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            mDatabaseRef.child("UserAccount").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if (!task.isSuccessful()) {
                         Log.e("firebase", "Error getting data", task.getException());
                     }
                     else {
-
-                        intent.putExtra("name", String.valueOf(task.getResult().getValue()));
+                        UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                        intent.putExtra("name", userAccount.getName());
                         // 여기는 일반 사용자 사진 가져오기!
-                        intent.putExtra("profileUrl", "일반");
+                        intent.putExtra("profileUrl", userAccount.getProfileURL());
                         startActivity(intent);
                         finish();
                     }
@@ -118,16 +118,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             userId=firebaseUser.getUid();
                             updateUserToday();
                             intent.putExtra("email", firebaseUser.getEmail());
-                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                                     if (!task.isSuccessful()) {
                                         Log.e("firebase", "Error getting data", task.getException());
                                     }
                                     else {
-                                        intent.putExtra("name", String.valueOf(task.getResult().getValue()));
+                                        UserAccount userAccount = task.getResult().getValue(UserAccount.class);
+                                        intent.putExtra("name", userAccount.getName());
                                         // 여기는 일반 사용자 사진 가져오기!
-                                        intent.putExtra("profileUrl", "일반");
+                                        intent.putExtra("profileUrl", userAccount.getProfileURL());
                                         startActivity(intent);
                                         finish();
                                     }
