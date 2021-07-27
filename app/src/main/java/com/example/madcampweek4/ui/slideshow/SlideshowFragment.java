@@ -2,6 +2,7 @@ package com.example.madcampweek4.ui.slideshow;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.madcampweek4.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Calendar;
 
 import static android.content.Context.MODE_NO_LOCALIZED_COLLATORS;
 
@@ -25,10 +36,15 @@ public class SlideshowFragment extends Fragment {
 
     public String fname=null;
     public String str=null;
-    public CalendarView calendarView;
+    public MaterialCalendarView calendarView;
     public Button cha_Btn,del_Btn,save_Btn;
     public TextView diaryTextView,textView2,textView3;
     public EditText contextEditText;
+
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabaseRef;
+    String name, userID;
+
 
     @Nullable
     @Override
@@ -47,25 +63,48 @@ public class SlideshowFragment extends Fragment {
 
         contextEditText=view.findViewById(R.id.contextEditText);
 
+        // firebase
+        mFirebaseAuth= FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
+        mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
 
-        String name="name";
-        String userID="userID";
-        textView3.setText(name+"님의 달력 일기장");
-
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        userID=firebaseUser.getUid();
+        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                diaryTextView.setVisibility(View.VISIBLE);
-                save_Btn.setVisibility(View.VISIBLE);
-                contextEditText.setVisibility(View.VISIBLE);
-                textView2.setVisibility(View.INVISIBLE);
-                cha_Btn.setVisibility(View.INVISIBLE);
-                del_Btn.setVisibility(View.INVISIBLE);
-                diaryTextView.setText(String.format("%d / %d / %d",year,month+1,dayOfMonth));
-                contextEditText.setText("");
-                checkDay(year,month,dayOfMonth,userID);
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    name=String.valueOf(task.getResult().getValue());
+                    textView3.setText(name+"님의 달력 일기장");
+                }
             }
         });
+
+
+        calendarView.setSelectedDate(CalendarDay.today());
+        calendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
+        calendarView.addDecorator(new MySelectorDecorator(getActivity()));
+
+        OneDayDecorator oneDayDecorator=new OneDayDecorator();
+        calendarView.addDecorators(oneDayDecorator);
+//        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//            @Override
+//            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+//                diaryTextView.setVisibility(View.VISIBLE);
+//                save_Btn.setVisibility(View.VISIBLE);
+//                contextEditText.setVisibility(View.VISIBLE);
+//                textView2.setVisibility(View.INVISIBLE);
+//                cha_Btn.setVisibility(View.INVISIBLE);
+//                del_Btn.setVisibility(View.INVISIBLE);
+//                diaryTextView.setText(String.format("%d / %d / %d",year,month+1,dayOfMonth));
+//                contextEditText.setText("");
+//                checkDay(year,month,dayOfMonth,userID);
+//            }
+//        });
+
+
         save_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,20 +119,12 @@ public class SlideshowFragment extends Fragment {
 
             }
         });
-
-
         return view;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //로그인 및 회원가입 엑티비티에서 이름을 받아옴
-//        Intent intent=getIntent();
-//        String name=intent.getStringExtra("userName");
-//        final String userID=intent.getStringExtra("userID");
-
     }
 
     public void  checkDay(int cYear,int cMonth,int cDay,String userID){

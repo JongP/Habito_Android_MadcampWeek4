@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.madcampweek4.R;
 import com.example.madcampweek4.ui.group.Group;
 import com.example.madcampweek4.ui.group.RecyclerViewAdapter;
+import com.github.ybq.android.spinkit.style.CubeGrid;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,10 +53,11 @@ import static android.app.Activity.RESULT_OK;
 
 public class SearchFragment extends Fragment {
 
-    private TextView tv_search;
+    private EditText et_searchGroup;
     private RecyclerView rv_searchGroup;
     private RecyclerViewAdapter recyclerViewAdapter;
     private FloatingActionButton fb_search;
+    private ProgressBar progressBar;
     private ArrayList<Group> groupItemList;
     private Uri selectImageUri;
 
@@ -72,6 +78,10 @@ public class SearchFragment extends Fragment {
 
         rv_searchGroup= view.findViewById(R.id.rv_groupSearch);
         fb_search = view.findViewById(R.id.fb_search);
+        et_searchGroup=view.findViewById(R.id.et_searchGroup);
+        progressBar = view.findViewById(R.id.spin_kit_searchGroup);
+        progressBar.setIndeterminateDrawable(new CubeGrid());
+
         rv_searchGroup.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
 
         groupItemList= new ArrayList<Group>();
@@ -80,7 +90,7 @@ public class SearchFragment extends Fragment {
         rv_searchGroup.setAdapter(recyclerViewAdapter);
 
         database= FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
-        databaseReference = database.getReference("MadCampWeek4/Group"); //db Table 연동 :
+        databaseReference = database.getReference("MadCampWeek4/Group"); //db Table 연동
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference().child("Group/profile");
@@ -92,7 +102,6 @@ public class SearchFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater dialog_inflater = requireActivity().getLayoutInflater();
                 dialogView = (LinearLayout) View.inflate(getContext(),R.layout.dialog_creategroup,null);
-//dialog_inflater.inflate(R.layout.dialog_creategroup,null
                 builder.setView(dialogView);
 
                 iv_groupProfile = dialogView.findViewById(R.id.iv_groupProfile);
@@ -136,12 +145,12 @@ public class SearchFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 //파이어베이스 데이터베이스의 데이터를 받아오는곳
-                Log.d(TAG, "listenr staart");
-                Log.d(TAG,snapshot.toString());
+
                 groupItemList.clear();
                 for(DataSnapshot snapshot1 : snapshot.getChildren()){
                     //Log.d(TAG, "onDataChange: loop");
                     Group group = snapshot1.getValue(Group.class);
+
 
                     String groupId = group.getId();
                     StorageReference profileRef = storageReference.child(groupId);
@@ -183,7 +192,21 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        et_searchGroup.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                filterGroups(s.toString());
+            }
+        });
 
         return view;
     }
@@ -194,6 +217,21 @@ public class SearchFragment extends Fragment {
         if(requestCode==GALLERY_CODE && resultCode==RESULT_OK && data!=null &&data.getData()!=null){
             selectImageUri=data.getData();
             iv_groupProfile.setImageURI(selectImageUri);
+        }
+    }
+
+    private  void filterGroups(String name){
+        ArrayList<Group> filterList = new ArrayList<>();
+        for(Group item : groupItemList){
+            if(item.getGroupName().toLowerCase().contains(name.toLowerCase())){
+                filterList.add(item);
+            }
+        }
+        if (filterList.isEmpty()){
+            Toast.makeText(getContext(),"No Group found for searched query",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            recyclerViewAdapter.filterList(filterList);
         }
     }
 }

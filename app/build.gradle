@@ -70,9 +70,15 @@ dependencies {
 
     // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    compile 'com.google.android.gms:play-services-ads:11.2.0'
 
     //for camera
     implementation 'com.karumi:dexter:6.0.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //calendarview
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
+
+    //loading spinner
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 }

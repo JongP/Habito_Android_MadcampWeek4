@@ -96,4 +96,5 @@ public class Board {
     public int getLike() {
         return like;
     }
+
 }

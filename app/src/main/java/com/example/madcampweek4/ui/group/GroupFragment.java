@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.madcampweek4.MainActivity;
 import com.example.madcampweek4.R;
 import com.example.madcampweek4.ui.board.BoardActivity;
+import com.github.ybq.android.spinkit.style.CubeGrid;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -39,11 +41,15 @@ public class GroupFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference,userRef,groupRef;
     private String TAG = "GroupFragmentTAG";
+    private ProgressBar progressBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_group, container, false);
 
         groupData = new ArrayList<>();  //객체 담을 arraylist
+
+        progressBar = view.findViewById(R.id.spin_kit_group);
+        progressBar.setIndeterminateDrawable(new CubeGrid());
 
         recyclerView = view.findViewById(R.id.groupRecyclerView);
         recyclerView.setHasFixedSize(true);  //기존성능 강화

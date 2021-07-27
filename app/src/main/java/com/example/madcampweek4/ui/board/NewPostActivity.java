@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -28,8 +29,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -53,7 +56,7 @@ import java.util.List;
 public class NewPostActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference, mDatabase;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -61,6 +64,8 @@ public class NewPostActivity extends AppCompatActivity {
     EditText et_newPostDescription;
     Bitmap bitmap;
     Uri uri_newPostImage;
+    String userName, postId;
+    Board boardItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,26 +143,47 @@ public class NewPostActivity extends AppCompatActivity {
 
     public void insertData(){
         storageReference= storage.getReference().child("Post");
-        String postId = databaseReference.push().getKey().toString();
+        postId = databaseReference.push().getKey().toString();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user != null ? user.getUid() : null;
 
-        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date());
+        firebaseAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        Log.d("아이디 이름 받기 성공", "제발 "+uid);
+        DatabaseReference name = mDatabase.child("MadCampWeek4/UserAccount").child(user.getUid()).child("name");
 
-        StorageReference contentImageRef = storageReference.child("Post/post_uri/"+ postId);
-
-        UploadTask uploadTask = contentImageRef.putFile(uri_newPostImage);
-
-        Board boardItem = new Board(postId, "", "", "", et_newPostDescription.getText().toString(), uri_newPostImage.toString(), timeStamp, 0);
-
-        databaseReference.child(postId).setValue(boardItem).addOnSuccessListener(new OnSuccessListener<Void>() {
+        name.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(getApplicationContext(), "Data upload Success", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Data upload Fail", Toast.LENGTH_SHORT).show();
+            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                if(!task.isSuccessful()){
+                    Toast.makeText(NewPostActivity.this, "아이디 가져오기 실패", Toast.LENGTH_SHORT).show();
+                    userName="";
+                }else{
+                    StorageReference contentImageRef = storageReference.child("Post/post_uri/"+ postId);
+                    UploadTask uploadTask = contentImageRef.putFile(uri_newPostImage);
+                    @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date());
+
+                    userName = String.valueOf(task.getResult().getValue());
+                    Log.d("아이디 받는 함수 성공", "제발 " + userName);
+
+                    boardItem = new Board(postId, userName, "", "", et_newPostDescription.getText().toString(), uri_newPostImage.toString(), timeStamp, 0);
+
+                    databaseReference.child(postId).setValue(boardItem).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(getApplicationContext(), "Data upload Success", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull @NotNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Data upload Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    Log.d("아이디 받는 함수 성공22", "제발 " + userName);
+                }
             }
         });
+
     }
+
 }
