@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.internal.GoogleApiAvailabilityCache;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -36,12 +38,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     private FirebaseAuth mFirebaseAuth; // firebase auth
     private DatabaseReference mDatabaseRef; //realtime db
     private EditText mEtEmail, mEtPwd;
+    private  String userId;
 
     private SignInButton btn_google;
     private GoogleApiClient googleApiClient;
@@ -63,7 +70,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.d(TAG, "user is not null");
             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("email", user.getEmail());
-            mDatabaseRef.child("UserAccount").child(user.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            userId=user.getUid();
+            updateUserToday();
+            mDatabaseRef.child("UserAccount").child(userId).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if (!task.isSuccessful()) {
@@ -103,6 +112,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if (task.isSuccessful()){
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
+                            userId=firebaseUser.getUid();
+                            updateUserToday();
                             intent.putExtra("email", firebaseUser.getEmail());
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
@@ -198,6 +209,70 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private void updateUserToday(){
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        mDatabaseRef.child("UserAccount").child(userId).child("groups").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                HashMap<String,Object> groupMap = (HashMap<String, Object>) dataSnapshot.getValue();
+                if(groupMap==null || groupMap.isEmpty()){
+                    Login.setGroupNum(0);
+                }
+                else{
+                    Login.setGroupNum(groupMap.size());
+                }
+
+                mDatabaseRef.child("UserAccount").child(userId).child("posts/today").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue()!=null){
+                            HashMap<String,Object> map = (HashMap<String, Object>)dataSnapshot.getValue();
+                            //for new day
+                            if(!map.get("date").equals(timeStamp)){
+                                double ratio=0;
+
+                                long postNum= (long) map.get("postNum");
+                                long groupNum=(long)map.get("groupNum");
+                                String pastDate = (String) map.get("date");
+
+                                Log.d(TAG, String.valueOf(postNum)+" "+String.valueOf(groupNum));
+
+                                if(groupNum!=0)  {
+                                    ratio = (double)postNum/groupNum;
+                                    Log.d(TAG, "ratio is "+String.valueOf(ratio));
+                                }
+                                HashMap<String,Object> ratioMap = new HashMap<>();
+                                ratioMap.put(pastDate,ratio);
+                                mDatabaseRef.child("UserAccount").child(userId).child("posts/ratios").updateChildren(ratioMap);
+
+                                Login.setPostNum(0);
+
+                                HashMap<String,Object> updateMap = new HashMap<>();
+                                updateMap.put("postNum",0);
+                                updateMap.put("date",timeStamp);
+                                updateMap.put("groupNum",Login.getGroupNum());
+                                mDatabaseRef.child("UserAccount").child(userId).child("posts/today").updateChildren(updateMap);
+
+                            }
+                        }else{
+                            //for new users
+                            HashMap<String,Object> map = new HashMap<>();
+                            map.put("date",timeStamp);
+                            map.put("postNum",0);
+                            map.put("groupNum",0);
+
+                            Login.setPostNum(0);
+                            mDatabaseRef.child("UserAccount").child(userId).child("posts/today").setValue(map);
+
+                        }
+                    }
+                });
+
+            }
+        });
 
     }
 }

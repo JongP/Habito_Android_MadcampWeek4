@@ -52,12 +52,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class NewPostActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
-    private DatabaseReference databaseReference, mDatabase;
+    private DatabaseReference databaseReference, userDatabase;
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private String groupId,groupName;
@@ -87,6 +88,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         database= FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
         databaseReference = database.getReference("MadCampWeek4/Post/"+groupId); //realtime database
+
 
         storage = FirebaseStorage.getInstance();  //for image
         storageReference = storage.getReference();
@@ -160,9 +162,9 @@ public class NewPostActivity extends AppCompatActivity {
         String uid = user != null ? user.getUid() : null;
 
         firebaseAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        Log.d("아이디 이름 받기 성공", "제발 "+uid);
-        DatabaseReference name = mDatabase.child("MadCampWeek4/UserAccount").child(user.getUid()).child("name");
+        userDatabase = database.getReference("MadCampWeek4/UserAccount/"+uid);
+        //Log.d("아이디 이름 받기 성공", "제발 "+uid);
+        DatabaseReference name = userDatabase.child("name");
 
         name.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -188,7 +190,7 @@ public class NewPostActivity extends AppCompatActivity {
                         }
                     });
 
-                    @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm").format(new Date());
+                    @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
 
                     userName = String.valueOf(task.getResult().getValue());
                     Log.d("아이디 받는 함수 성공", "제발 " + userName);
@@ -198,7 +200,21 @@ public class NewPostActivity extends AppCompatActivity {
                     databaseReference.child(postId).setValue(boardItem).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(getApplicationContext(), "Data upload Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Post upload Success", Toast.LENGTH_SHORT).show();
+
+                        userDatabase.child("posts/today").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                            @Override
+                            public void onSuccess(DataSnapshot dataSnapshot) {
+                                HashMap<String,Object> map  = (HashMap<String,Object>) dataSnapshot.getValue();
+                                Log.d(TAG, map.toString());
+                                Log.d(TAG, map.toString());
+                            }
+                        });
+
+
+
+
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -206,7 +222,8 @@ public class NewPostActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Data upload Fail", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    Log.d("아이디 받는 함수 성공22", "제발 " + userName);
+
+
                 }
             }
         });
