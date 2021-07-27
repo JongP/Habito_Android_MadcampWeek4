@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.madcampweek4.Login;
 import com.example.madcampweek4.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -155,7 +156,7 @@ public class NewPostActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
-    public void insertData(){
+    private void insertData(){
         storageReference= storage.getReference().child("Post");
         postId = databaseReference.push().getKey().toString();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -201,19 +202,10 @@ public class NewPostActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(getApplicationContext(), "Post upload Success", Toast.LENGTH_SHORT).show();
-
-                        userDatabase.child("posts/today").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                            @Override
-                            public void onSuccess(DataSnapshot dataSnapshot) {
-                                HashMap<String,Object> map  = (HashMap<String,Object>) dataSnapshot.getValue();
-                                Log.d(TAG, map.toString());
-                                Log.d(TAG, map.toString());
-                            }
-                        });
-
-
-
-
+                            Login.setPostNum(Login.getPostNum()+1);
+                            HashMap<String,Object> todayMap = new HashMap<>();
+                            todayMap.put("postNum",Login.getPostNum());
+                            userDatabase.child("posts/today").updateChildren(todayMap);
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {

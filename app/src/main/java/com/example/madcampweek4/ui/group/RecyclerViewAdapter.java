@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.madcampweek4.Login;
 import com.example.madcampweek4.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -103,6 +104,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             map1.put(userId,userId);
                             groupRef.updateChildren(map1);
                             holder.fb_joinGroup.setText("Unjoin");
+
+                            Login.setGroupNum(Login.getGroupNum()+1);
+                            DatabaseReference todayRef=database.getReference("MadCampWeek4/UserAccount/"+userId+"/posts/today");
+                            HashMap<String,Object> todayMap = new HashMap<>();
+                            todayMap.put("groupNum",Login.getGroupNum());
+                            todayRef.updateChildren(todayMap);
+
                             Toast.makeText(v.getContext(),"Joined",Toast.LENGTH_SHORT).show();
                         }
                         else{
@@ -110,6 +118,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             groupRef.child(userId).removeValue();
 
                             holder.fb_joinGroup.setText("Join");
+
+                            Login.setGroupNum(Login.getGroupNum()-1);
+                            DatabaseReference todayRef=database.getReference("MadCampWeek4/UserAccount/"+userId+"/posts/today");
+                            HashMap<String,Object> todayMap = new HashMap<>();
+                            todayMap.put("groupNum",Login.getGroupNum());
+                            todayRef.updateChildren(todayMap);
+
                             Toast.makeText(v.getContext(),"Unjoined",Toast.LENGTH_SHORT).show();
                         }
 
