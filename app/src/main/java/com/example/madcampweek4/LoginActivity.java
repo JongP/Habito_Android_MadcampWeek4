@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         Log.e("firebase", "Error getting data", task.getException());
                     }
                     else {
+
                         intent.putExtra("name", String.valueOf(task.getResult().getValue()));
                         // 여기는 일반 사용자 사진 가져오기!
                         intent.putExtra("profileUrl", "일반");
@@ -181,8 +182,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             if(result.isSuccess()){
                 GoogleSignInAccount gaccount=result.getSignInAccount();
                 resultGoogleLogin(gaccount);// 닉네임, 프로필사진Url, 이메일 주소 등
-
-
             }
         }
     }

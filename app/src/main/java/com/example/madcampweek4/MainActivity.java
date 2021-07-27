@@ -40,6 +40,8 @@ import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -107,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Uri uri) {
                     Glide.with(getApplicationContext()).load(uri).into(imageView);
+                    HashMap<String,Object> userMap = new HashMap<>();
+                    userMap.put("profile",uri.toString());
+                    mDatabaseRef.child("UserAccount/"+uid).updateChildren(userMap);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
