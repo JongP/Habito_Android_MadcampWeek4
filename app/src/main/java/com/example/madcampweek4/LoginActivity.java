@@ -423,6 +423,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 updateMap.put("postNum",0);
                                 updateMap.put("date",timeStamp);
                                 updateMap.put("groupNum",Login.getGroupNum());
+                                updateMap.put("toasted",0);
                                 mDatabaseRef.child("UserAccount").child(userId).child("posts/today").updateChildren(updateMap);
 
                                 point= (int) (Math.floor(Math.sqrt(groupNum*postNum)*10));
@@ -459,7 +460,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             map.put("date",timeStamp);
                             map.put("postNum",0);
                             map.put("groupNum",0);
-
+                            map.put("toasted",0);
                             Login.setPostNum(0);
                             mDatabaseRef.child("UserAccount").child(userId).child("posts/today").setValue(map);
                         }
