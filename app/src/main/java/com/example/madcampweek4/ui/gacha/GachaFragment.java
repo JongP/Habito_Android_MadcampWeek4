@@ -40,27 +40,6 @@ public class GachaFragment extends Fragment {
             public void onClick(View v) {
                 btn_fishing.setVisibility(View.GONE);
                 lottie_fishing.playAnimation();
-                lottie_fishing.addAnimatorListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        btn_fishing.setClickable(false);
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        btn_fishing.setClickable(true);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

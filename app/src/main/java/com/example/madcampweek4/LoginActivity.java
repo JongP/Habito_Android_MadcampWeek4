@@ -50,6 +50,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -357,7 +358,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void updateUserToday(){
         //@SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        final String timeStamp="2021-07-29";
+        final String timeStamp="2021-07-29";//?????????
+        //update user fish
+        mDatabaseRef.child("UserAccount").child(userId).child("fish").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null){
+                    Fish.setOwn( (ArrayList<Boolean>) dataSnapshot.getValue());
+                    Log.d(TAG, dataSnapshot.getValue().toString());
+                    Log.d(TAG, Fish.getOwn().toString());
+                }else//if user is first time to log in
+                {
+                    Log.d(TAG, "fish data null");
+                    ArrayList<Boolean> arrayList=new ArrayList<>();
+                    for(int i=0;i<7;i++){
+                        arrayList.add(false);
+                    }
+                    mDatabaseRef.child("UserAccount").child(userId).child("fish").setValue(arrayList);
+                }
+            }
+
+        });
+
+        //update user today
         mDatabaseRef.child("UserAccount").child(userId).child("groups").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {

@@ -20,8 +20,10 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
+import com.example.madcampweek4.Fish;
 import com.example.madcampweek4.R;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -67,16 +69,14 @@ public class AquariumFragment extends Fragment {
                     } else {
                         view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     }
-                    int[] location = new int[2] ;
-                    iv_fish.getLocationOnScreen(location);
                     randomFishMove(iv_fish,0,0,1);
-                    randomFishMove(iv_cutefish,0,0,-1);
-                    randomFishMove(iv_fishShark,0,0,-1);
-                    randomFishMove(iv_fishSpinJelly,0,0,1);
-                    randomFishMove(iv_fishTurtle,0,0,1);
-                    randomFishMove(iv_fishWhale,0,0,1);
-                    randomFishMove(iv_fishBalloon,0,0,-1);
-                    randomFishMove(iv_fishBlue,0,0,1);
+
+                    ownFishMove();
+
+
+
+
+
                 }
             });
 
@@ -132,6 +132,26 @@ public class AquariumFragment extends Fragment {
 
             }
         });
+
+    }
+
+    private void ownFishMove(){
+        ArrayList<Boolean> ownFish = Fish.getOwn();
+
+        if(ownFish.get(0)) randomFishMove(iv_cutefish,0,0,-1);
+        else iv_cutefish.setVisibility(View.GONE);
+        if(ownFish.get(1)) randomFishMove(iv_fishShark,0,0,-1);
+        else iv_fishShark.setVisibility(View.GONE);
+        if(ownFish.get(2)) randomFishMove(iv_fishSpinJelly,0,0,1);
+        else iv_fishSpinJelly.setVisibility(View.GONE);
+        if(ownFish.get(3)) randomFishMove(iv_fishTurtle,0,0,1);
+        else iv_fishTurtle.setVisibility(View.GONE);
+        if(ownFish.get(4)) randomFishMove(iv_fishWhale,0,0,1);
+        else iv_fishWhale.setVisibility(View.GONE);
+        if(ownFish.get(5)) randomFishMove(iv_fishBalloon,0,0,-1);
+        else iv_fishBalloon.setVisibility(View.GONE);
+        if(ownFish.get(6))  randomFishMove(iv_fishBlue,0,0,1);
+        else iv_fishBlue.setVisibility(View.GONE);
 
     }
 }
