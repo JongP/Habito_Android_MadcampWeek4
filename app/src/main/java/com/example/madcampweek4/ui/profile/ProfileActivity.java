@@ -47,7 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     String name, email, profileUrl;
     Dialog dialog;
-    TextView userName, userEmail;
+    TextView userName, userEmail, tv_point;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,9 +72,25 @@ public class ProfileActivity extends AppCompatActivity {
 
         userName=findViewById(R.id.userName);
         userEmail=findViewById(R.id.userEmail);
+        tv_point=findViewById(R.id.tv_point);
 
         userName.setText(name);
         userEmail.setText(email);
+
+        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("points").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    tv_point.setText("points : "+String.valueOf(task.getResult().getValue()));
+                }
+            }
+        });
+
+
+
 
         ImageView iv_profileUrl=findViewById(R.id.iv_profileUrl);
 
@@ -237,7 +253,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                         }
                     }
-                });;
+                });
             }
         });
         iv_closeDialog2.setOnClickListener(new View.OnClickListener() {

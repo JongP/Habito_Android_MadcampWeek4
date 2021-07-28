@@ -2,11 +2,13 @@ package com.example.madcampweek4;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -391,6 +393,30 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 updateMap.put("date",timeStamp);
                                 updateMap.put("groupNum",Login.getGroupNum());
                                 mDatabaseRef.child("UserAccount").child(userId).child("posts/today").updateChildren(updateMap);
+
+                                int point= (int) (Math.floor(Math.sqrt(groupNum*postNum)*10));
+                                final int[] pastpoints = {0};
+                                Log.d("오늘의 포인트",""+point+"점");
+
+                                FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                                mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("points").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @RequiresApi(api = Build.VERSION_CODES.N)
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.e("firebase", "Error getting data", task.getException());
+                                        }
+                                        else {
+                                            Long pp=(Long) task.getResult().getValue();
+                                            pastpoints[0] =Math.toIntExact(pp);
+
+                                            int total=point+pastpoints[0];
+                                            mDatabaseRef.child("UserAccount").child(userId).child("points").setValue(total);
+                                        }
+                                    }
+                                });
+
+
 
                             }
                         }else{

@@ -57,11 +57,22 @@
 
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:id="@+id/tv_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="points:"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_horizontal"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,10 +81,10 @@
         <LinearLayout
             android:layout_width="85dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:ignore="MissingConstraints"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_create_group"
@@ -82,7 +93,7 @@
                 android:backgroundTint="#49A7ED"
                 android:clickable="true"
                 app:srcCompat="@drawable/outline_perm_identity_white_24dp"
-                app:tint="@color/white"/>
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -98,9 +109,9 @@
         <LinearLayout
             android:layout_width="85dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
-            tools:ignore="MissingConstraints"
-            android:gravity="center">
+            tools:ignore="MissingConstraints">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_update_pwd"
@@ -109,8 +120,8 @@
                 android:backgroundTint="#2C85E3"
                 android:clickable="true"
                 app:srcCompat="@drawable/outline_lock_black_24dp"
-                tools:ignore="MissingConstraints"
-                app:tint="@color/white"/>
+                app:tint="@color/white"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -127,9 +138,9 @@
         <LinearLayout
             android:layout_width="85dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
-            tools:ignore="MissingConstraints"
-            android:gravity="center">
+            tools:ignore="MissingConstraints">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_logout"
@@ -138,8 +149,8 @@
                 android:backgroundTint="#176CDC"
                 android:clickable="true"
                 app:srcCompat="@drawable/ic_menu_logout"
-                tools:ignore="MissingConstraints"
-                app:tint="@color/white"/>
+                app:tint="@color/white"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -147,17 +158,17 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
                 android:text="LOG OUT"
-                tools:ignore="MissingConstraints"
                 android:textAlignment="center"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                tools:ignore="MissingConstraints" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="85dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center"
+            android:orientation="vertical"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -167,8 +178,8 @@
                 android:backgroundTint="#0659D6"
                 android:clickable="true"
                 app:srcCompat="@drawable/ic_menu_signout"
-                tools:ignore="MissingConstraints"
-                app:tint="@color/white"/>
+                app:tint="@color/white"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/textView7"
