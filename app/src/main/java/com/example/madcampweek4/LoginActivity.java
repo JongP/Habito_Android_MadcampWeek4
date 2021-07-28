@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         // 여기는 일반 사용자 사진 가져오기!
                         intent.putExtra("profileUrl", userAccount.getProfileURL());
                         intent.putExtra("points", userAccount.getPoints());
+                        Login.setPoints(userAccount.getPoints());
                         startActivity(intent);
                         finish();
                     }
@@ -149,6 +150,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         // 여기는 일반 사용자 사진 가져오기!
                                         intent.putExtra("profileUrl", userAccount.getProfileURL());
                                         intent.putExtra("points", point);
+                                        Login.setPoints(userAccount.getPoints());
                                         startActivity(intent);
                                         finish();
                                     }
@@ -357,21 +359,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void updateUserToday(){
-        //@SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        final String timeStamp="2021-07-29";//?????????
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
         //update user fish
         mDatabaseRef.child("UserAccount").child(userId).child("fish").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue()!=null){
                     Fish.setOwn( (ArrayList<Boolean>) dataSnapshot.getValue());
-                    Log.d(TAG, dataSnapshot.getValue().toString());
-                    Log.d(TAG, Fish.getOwn().toString());
+                    //Log.d(TAG, dataSnapshot.getValue().toString());
+                    //Log.d(TAG, Fish.getOwn().toString());
                 }else//if user is first time to log in
                 {
                     Log.d(TAG, "fish data null");
                     ArrayList<Boolean> arrayList=new ArrayList<>();
-                    for(int i=0;i<7;i++){
+                    for(int i=0;i<Fish.getMaxFish();i++){
                         arrayList.add(false);
                     }
                     mDatabaseRef.child("UserAccount").child(userId).child("fish").setValue(arrayList);
@@ -397,7 +399,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.getValue()!=null){
                             HashMap<String,Object> map = (HashMap<String, Object>)dataSnapshot.getValue();
-                            //for new day
+                            //for new day  when date is different
                             if(map!=null&&map.get("date")!=null&&!map.get("date").equals(timeStamp)){
                                 double ratio=0;
 
@@ -443,6 +445,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                             mDatabaseRef.child("UserAccount").child(userId).child("points").setValue(total);
 
                                             Login.setPoints(total);
+                                            Log.d(TAG, "setPoints toal: "+String.valueOf(total));
                                             mDatabaseRef.child("UserAccount").child(userId).child("recent_points").setValue(point);
 
                                         }
