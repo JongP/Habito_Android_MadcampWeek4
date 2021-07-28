@@ -1,6 +1,5 @@
 package com.example.madcampweek4.ui.profile;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,9 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,8 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.madcampweek4.LoginActivity;
 import com.example.madcampweek4.R;
-import com.example.madcampweek4.RegisterActivity;
-import com.example.madcampweek4.ui.group.Group;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,6 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     String name, email, profileUrl;
     Dialog dialog;
+    TextView userName, userEmail;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,8 +70,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
 
-        TextView userName=findViewById(R.id.userName);
-        TextView userEmail=findViewById(R.id.userEmail);
+        userName=findViewById(R.id.userName);
+        userEmail=findViewById(R.id.userEmail);
 
         userName.setText(name);
         userEmail.setText(email);
@@ -108,7 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         final FloatingActionButton btn_update_pwd = findViewById(R.id.btn_update_pwd);
-        final FloatingActionButton btn_update_name=findViewById(R.id.btn_update_name);
+        final FloatingActionButton btn_update_name=findViewById(R.id.btn_create_group);
         final FloatingActionButton btn_logout = findViewById(R.id.btn_logout);
         final FloatingActionButton btn_signout = findViewById(R.id.btn_signout);
 
@@ -157,7 +153,7 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_name_update);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        Button btn_update_name = dialog.findViewById(R.id.btn_update_name);
+        Button btn_update_name = dialog.findViewById(R.id.btn_create_group);
         final EditText et_name = dialog.findViewById(R.id.et_name);
         ImageView iv_closeDialog = dialog.findViewById(R.id.iv_closeDialog);
 
@@ -165,11 +161,18 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //  현재 유저 이름을 저걸로 setValue
-                String EtName=et_name.getText().toString();
+                String EtName = et_name.getText().toString();
                 FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser(); // 현재 유저
+
+                userName.setText(EtName);
 
                 mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("name").setValue(EtName);
                 Toast.makeText(ProfileActivity.this, "이름 변경!", Toast.LENGTH_SHORT).show();
+
+                Log.d("new Name", "name : " + EtName);
+                //ProfileActivity.this.recreate();
+
+                dialog.dismiss();
             }
         });
         iv_closeDialog.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +182,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+
+
     }
 
     private void updatePwd() {

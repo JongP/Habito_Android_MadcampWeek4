@@ -41,6 +41,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
                 android:text="name"
+                android:textStyle="bold"
                 android:textSize="20sp" />
 
             <TextView
@@ -75,7 +76,7 @@
             android:gravity="center">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_update_name"
+                android:id="@+id/btn_create_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#49A7ED"
