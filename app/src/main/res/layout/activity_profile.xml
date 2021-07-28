@@ -6,6 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:theme="@style/Theme.MadCampWeek4.AppBarOverlay"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/Theme.MadCampWeek4.PopupOverlay"
+        tools:ignore="MissingConstraints" />
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         style="@style/loginCard"
