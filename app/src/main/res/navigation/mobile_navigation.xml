@@ -29,4 +29,10 @@
         android:label="Aquarium"
         tools:layout="@layout/fragment_aquarium" />
 
+    <fragment
+        android:id="@+id/nav_gacha"
+        android:name="com.example.madcampweek4.ui.gacha.GachaFragment"
+        android:label="Gacha"
+        tools:layout="@layout/fragment_gacha" />
+
 </navigation>

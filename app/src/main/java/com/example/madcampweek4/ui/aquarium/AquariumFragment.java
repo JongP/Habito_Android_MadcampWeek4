@@ -95,9 +95,9 @@ public class AquariumFragment extends Fragment {
         int translationX = r.nextInt(width);
         int translationY = min_height+r.nextInt(height-min_height);
         int durationTime = 3000+r.nextInt(4000);
-        Log.d(TAG, "x: "+String.valueOf(location[0])+"  y: "+String.valueOf(location[1]));
-        Log.d(TAG, "tx: "+String.valueOf(translationX)+"  ty: "+String.valueOf(translationY));
-        Log.d(TAG, "mx: "+String.valueOf(translationX-location[0])+"  my: "+String.valueOf(translationY-location[1]));
+        //Log.d(TAG, "x: "+String.valueOf(location[0])+"  y: "+String.valueOf(location[1]));
+        //Log.d(TAG, "tx: "+String.valueOf(translationX)+"  ty: "+String.valueOf(translationY));
+        //Log.d(TAG, "mx: "+String.valueOf(translationX-location[0])+"  my: "+String.valueOf(translationY-location[1]));
 
 
         TranslateAnimation anim = new TranslateAnimation(currentX,translationX-location[0],currentY,translationY-location[1]);

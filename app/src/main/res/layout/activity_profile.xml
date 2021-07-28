@@ -57,15 +57,29 @@
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/tv_point"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="points:"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        android:gravity="center_vertical">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/imageFilterView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/coin" />
+
+        <TextView
+            android:id="@+id/tv_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="points" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
