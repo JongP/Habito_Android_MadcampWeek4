@@ -7,6 +7,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final int REQ_SIGN_GOOGLE=100;
 
     private CallbackManager mCallbackManager;
+    int point;
 
     private String TAG ="LoginActivity";
 
@@ -101,6 +104,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         intent.putExtra("name", userAccount.getName());
                         // 여기는 일반 사용자 사진 가져오기!
                         intent.putExtra("profileUrl", userAccount.getProfileURL());
+                        intent.putExtra("points", userAccount.getPoints());
                         startActivity(intent);
                         finish();
                     }
@@ -143,6 +147,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         intent.putExtra("name", userAccount.getName());
                                         // 여기는 일반 사용자 사진 가져오기!
                                         intent.putExtra("profileUrl", userAccount.getProfileURL());
+                                        intent.putExtra("points", point);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -351,7 +356,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void updateUserToday(){
-        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        //@SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        final String timeStamp="2021-07-29";
         mDatabaseRef.child("UserAccount").child(userId).child("groups").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -394,7 +400,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 updateMap.put("groupNum",Login.getGroupNum());
                                 mDatabaseRef.child("UserAccount").child(userId).child("posts/today").updateChildren(updateMap);
 
-                                int point= (int) (Math.floor(Math.sqrt(groupNum*postNum)*10));
+                                point= (int) (Math.floor(Math.sqrt(groupNum*postNum)*10));
                                 final int[] pastpoints = {0};
                                 Log.d("오늘의 포인트",""+point+"점");
 
@@ -414,6 +420,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                             mDatabaseRef.child("UserAccount").child(userId).child("points").setValue(total);
 
                                             Login.setPoints(total);
+                                            mDatabaseRef.child("UserAccount").child(userId).child("recent_points").setValue(point);
+
                                         }
                                     }
                                 });
@@ -428,7 +436,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                             Login.setPostNum(0);
                             mDatabaseRef.child("UserAccount").child(userId).child("posts/today").setValue(map);
-
                         }
                     }
                 });
