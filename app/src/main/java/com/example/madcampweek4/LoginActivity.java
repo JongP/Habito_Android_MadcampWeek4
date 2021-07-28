@@ -412,6 +412,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                                             int total=point+pastpoints[0];
                                             mDatabaseRef.child("UserAccount").child(userId).child("points").setValue(total);
+
+                                            Login.setPoints(total);
                                         }
                                     }
                                 });

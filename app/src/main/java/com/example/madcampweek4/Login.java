@@ -2,7 +2,15 @@ package com.example.madcampweek4;
 
 public class Login {
     private static String name, email;
-    private static int groupNum, postNum;
+    private static int groupNum, postNum, points;
+
+    public static int getPoints() {
+        return points;
+    }
+
+    public static void setPoints(int points) {
+        Login.points = points;
+    }
 
     Login(String name, String email){
         this.name=name;
