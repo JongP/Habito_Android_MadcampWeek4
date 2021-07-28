@@ -1,8 +1,11 @@
 package com.example.madcampweek4.ui.search;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,6 +76,8 @@ public class SearchFragment extends Fragment {
     private  String TAG = "SearchFragment";
     private final int GALLERY_CODE = 10;
 
+    private Dialog dialog;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -99,13 +105,16 @@ public class SearchFragment extends Fragment {
         fb_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: start");
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater dialog_inflater = requireActivity().getLayoutInflater();
-                dialogView = (LinearLayout) View.inflate(getContext(),R.layout.dialog_creategroup,null);
-                builder.setView(dialogView);
+                dialog = new Dialog(getContext());
 
-                iv_groupProfile = dialogView.findViewById(R.id.iv_groupProfile);
+                dialog.setContentView(R.layout.dialog_creategroup);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                iv_groupProfile = dialog.findViewById(R.id.iv_groupProfile);
+                Button btn_create_group = dialog.findViewById(R.id.btn_create_group);
+                EditText et_groupName = dialog.findViewById(R.id.et_groupName);
+                EditText et_groupInfo = dialog.findViewById(R.id.et_groupInfo);
+                ImageView iv_closeDialog = dialog.findViewById(R.id.iv_closeDialog);
 
                 iv_groupProfile.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -115,30 +124,31 @@ public class SearchFragment extends Fragment {
                         startActivityForResult(intent, GALLERY_CODE);
                     }
                 });
+                btn_create_group.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String groupId = databaseReference.push().getKey().toString();
+
+                        StorageReference profileRef = storageReference.child(groupId);
+                        UploadTask uploadTask = profileRef.putFile(selectImageUri);
+
+                        Log.d(TAG, "profileRef: "+profileRef.toString());
 
 
-                builder.setPositiveButton("create", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                EditText et_groupName = dialogView.findViewById(R.id.et_groupName);
-                                EditText et_groupInfo = dialogView.findViewById(R.id.et_groupInfo);
+                        Group group = new Group(groupId,""
+                                ,et_groupName.getText().toString(),et_groupInfo.getText().toString());
 
-                                String groupId = databaseReference.push().getKey().toString();
+                        databaseReference.child(groupId).setValue(group);
 
-                                StorageReference profileRef = storageReference.child(groupId);
-                                UploadTask uploadTask = profileRef.putFile(selectImageUri);
-
-                                Log.d(TAG, "profileRef: "+profileRef.toString());
-
-
-                                Group group = new Group(groupId,""
-                                        ,et_groupName.getText().toString(),et_groupInfo.getText().toString());
-
-                                databaseReference.child(groupId).setValue(group);
-                                return;
-                            }
-                        })
-                        .setNegativeButton("cancel", null).create().show();
+                    }
+                });
+                iv_closeDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
 

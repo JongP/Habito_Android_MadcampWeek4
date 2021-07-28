@@ -7,6 +7,6 @@
     <size
         android:width="36dp"
         android:height="50dp" />
-    <corners android:radius="10dp" />
+
 
 </shape>
