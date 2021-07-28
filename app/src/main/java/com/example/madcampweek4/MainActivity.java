@@ -143,32 +143,48 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
-        new Handler().postDelayed(new Runnable() {
+        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("posts/today/toasted").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void run() {
-                mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("recent_points").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (!task.isSuccessful()) {
-                            Log.e("firebase", "Error getting data", task.getException());
-                        } else {
-                            Long pp = (Long) task.getResult().getValue();
-                            // Dialog
-                            View dialogView = getLayoutInflater().inflate(R.layout.dialog_point, null);
-                            final TextView tv_point = dialogView.findViewById(R.id.tv_point);
-                            tv_point.setText("Today's Point : " + pp);
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setView(dialogView);
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                } else {
+                    Long pp = (Long) task.getResult().getValue();
+                    Long val= Long.valueOf(0);
 
-                            AlertDialog alertDialog = builder.create();
-                            alertDialog.show();
+                    if (pp.equals(val)){
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("recent_points").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @RequiresApi(api = Build.VERSION_CODES.N)
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.e("firebase", "Error getting data", task.getException());
+                                        } else {
+                                            Long pp = (Long) task.getResult().getValue();
+                                            // Dialog
+                                            View dialogView = getLayoutInflater().inflate(R.layout.dialog_point, null);
+                                            final TextView tv_point = dialogView.findViewById(R.id.tv_point);
+                                            tv_point.setText("Today's Point : " + pp);
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                            builder.setView(dialogView);
 
-                        }
+                                            AlertDialog alertDialog = builder.create();
+                                            alertDialog.show();
+
+                                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("posts/today/toasted").setValue(1);
+
+                                        }
+                                    }
+                                });
+                            }}, 2000);
                     }
-                });
-            }}, 2000);
 
+                }
+            }
+        });
 
     }
 
