@@ -1,5 +1,6 @@
 package com.example.madcampweek4.ui.calendar;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,13 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.madcampweek4.R;
+import com.example.madcampweek4.ui.aquarium.AquariumFragment;
+import com.example.madcampweek4.ui.gacha.GachaActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +42,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 
-public class SlideshowFragment extends Fragment {
+public class CalendarFragment extends Fragment {
 
     public MaterialCalendarView calendarView;
     public TextView tv_caltitle;
@@ -46,6 +53,7 @@ public class SlideshowFragment extends Fragment {
     String[] result;
     double[] result_ratio;
 
+    Button btn_getfish, btn_gotofish;
     //앞에서 받아오기~
     HashMap<String, Double> date_rate=new HashMap<String, Double>();
 
@@ -57,14 +65,13 @@ public class SlideshowFragment extends Fragment {
         calendarView=view.findViewById(R.id.calendarView);
         tv_caltitle =view.findViewById(R.id.tv_caltitle);
 
+        btn_getfish=view.findViewById(R.id.btn_getfish);
+        btn_gotofish=view.findViewById(R.id.btn_gotofish);
+
         // firebase
         mFirebaseAuth= FirebaseAuth.getInstance();
         FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
-
-        // 해시맵 예시
-//        date_rate.put("2021,07,18", 0.0);date_rate.put("2021,07,20", 0.2);date_rate.put("2021,08,05", 0.3);date_rate.put("2021,08,18", 0.5);
-//        date_rate.put("2021,08,19", 0.6);date_rate.put("2021,08,20", 0.78);date_rate.put("2021,08,28", 0.9);date_rate.put("2021,08,29", 1.0);
 
         mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("posts/ratios").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -91,11 +98,6 @@ public class SlideshowFragment extends Fragment {
                             }
                         }
                         ////// 해시맵 처리 여기까지
-
-                        String str="";
-                        for(int i=0;i<result_ratio.length;i++){
-                            str+=result_ratio[i]+", ";
-                        }
 
                         calendarView.setSelectedDate(CalendarDay.today());
                         calendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
@@ -144,6 +146,35 @@ public class SlideshowFragment extends Fragment {
                                 } else {
                                     tv_ratio.setText("No achivments found");
                                 }
+
+
+                                // 아쿠아리움 버튼버튼~~~Double.parseDouble
+                                double rate=Double.parseDouble(ach_rate);
+                                if (rate>=0.5){
+                                    btn_getfish.setVisibility(View.VISIBLE);
+                                    btn_getfish.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(getActivity(), "물고기 획득 가능", Toast.LENGTH_SHORT).show();
+                                            Intent intent=new Intent(getActivity(), GachaActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                }
+                                else{
+                                    btn_getfish.setVisibility(View.INVISIBLE);
+                                }
+                                btn_gotofish.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new com.example.madcampweek4.ui.aquarium.AquariumFragment()).commit();
+
+                                    }
+                                });
+
+
                             }
                         });
                     }
