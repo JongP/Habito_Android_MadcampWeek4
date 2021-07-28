@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/loginCard"
     app:cardCornerRadius="@dimen/loginCardRadius"
     android:elevation="10dp"
@@ -51,29 +52,6 @@
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/btn_google"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"/>
-
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/btn_facebook"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp" />
-
-
-        <Button
-            android:id="@+id/btn_login"
-            style="@style/loginButton"
-            android:text="Login"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/loginViewsMargin"/>
-
         <TextView
             style="@style/parent"
             android:id="@+id/tv_register"
@@ -84,11 +62,39 @@
             android:onClick="viewRegisterClicked"
             android:padding="20dp"/>
 
+        <Button
+            android:id="@+id/btn_login"
+            style="@style/loginButton"
+            android:text="Login"
+            android:layout_gravity="center_horizontal"/>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center|center_vertical"
+            android:layout_marginTop="10dp">
 
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/btn_google"
+                android:layout_width="150dp"
+                android:layout_height="33dp"
+                android:layout_gravity="center"
+                android:paddingStart="13dp"
+                android:layout_margin="5dp"
+                android:layout_marginStart="10dp">
+            </com.google.android.gms.common.SignInButton>
 
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/btn_facebook"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_marginEnd="10dp"/>
 
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
