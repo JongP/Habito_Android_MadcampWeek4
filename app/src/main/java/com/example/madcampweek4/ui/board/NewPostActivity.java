@@ -9,11 +9,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -82,9 +84,11 @@ public class NewPostActivity extends AppCompatActivity {
         Intent intent=getIntent();
         groupId=intent.getStringExtra("groupId");
         groupName=intent.getStringExtra("groupName");
-
-        ActionBar ab = (NewPostActivity.this).getSupportActionBar();
-        ab.setTitle("New Post");
+//
+//        ActionBar ab = (NewPostActivity.this).getSupportActionBar();
+//        ab.setTitle(Html.fromHtml("<font color=\"black\">" + "New Post" + "</font>"));
+//        ab.setElevation(0);
+//        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
 
         iv_newPostImage = (ImageView)findViewById(R.id.iv_newPostImage);
 

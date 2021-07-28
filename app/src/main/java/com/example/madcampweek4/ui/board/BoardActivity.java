@@ -3,12 +3,15 @@ package com.example.madcampweek4.ui.board;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 
@@ -52,10 +55,11 @@ public class BoardActivity extends AppCompatActivity {
         groupId=intent.getStringExtra("groupId");
         String groupName = intent.getStringExtra("groupName");
         Log.d(TAG, groupId);
-
-        ActionBar ab = (BoardActivity.this).getSupportActionBar();
-        ab.setTitle(groupName);
-
+//
+//        ActionBar ab = (BoardActivity.this).getSupportActionBar();
+//        ab.setTitle(Html.fromHtml("<font color=\"black\">" + groupName + "</font>"));
+//        ab.setElevation(0);
+//        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
 
         boardData= new ArrayList<>();
 

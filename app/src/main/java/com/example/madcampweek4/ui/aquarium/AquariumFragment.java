@@ -35,9 +35,6 @@ public class AquariumFragment extends Fragment {
     public AquariumFragment() {
     }
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

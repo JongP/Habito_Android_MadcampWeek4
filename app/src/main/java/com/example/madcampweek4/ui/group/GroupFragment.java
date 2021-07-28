@@ -1,6 +1,7 @@
 package com.example.madcampweek4.ui.group;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,7 +65,6 @@ public class GroupFragment extends Fragment {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-
         groupRecyclerViewAdapter.setOnItemClickListener(new GroupRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
@@ -112,9 +113,6 @@ public class GroupFragment extends Fragment {
 
             }
         });
-
-
-
 
         return view;
     }

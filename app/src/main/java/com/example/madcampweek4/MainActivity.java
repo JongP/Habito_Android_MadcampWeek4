@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         Intent intent=getIntent();
         email = intent.getStringExtra("email");
@@ -62,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
         profileUrl=intent.getStringExtra("profileUrl");
 
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
         mFirebaseAuth= FirebaseAuth.getInstance();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("email", email);
                 intent.putExtra("name", name);
                 intent.putExtra("profileUrl", profileUrl);
+
 
                 Toast.makeText(MainActivity.this, "헤더 누름!", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_groups, R.id.nav_search, R.id.nav_calendar)
+                R.id.nav_groups, R.id.nav_search, R.id.nav_calendar, R.id.nav_aquarium)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);

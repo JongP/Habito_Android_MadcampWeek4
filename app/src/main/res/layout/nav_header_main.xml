@@ -16,13 +16,15 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="0dp"
-                android:weightSum="12">
+                android:weightSum="12"
+                android:backgroundTint="#0000ffff">
 
                 <LinearLayout
                     style="@style/parent"
                     android:layout_weight="3"
                     android:background="@drawable/login_shape_bk"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <ImageView
                         style="@style/parent"

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MadCampWeek4.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:titleTextColor">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+</resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -28,13 +29,15 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:text="NEW POST"
+        android:textColor="@color/white"
         app:fabSize="auto"
         app:icon="@drawable/outline_add_black_24dp"
+        app:iconTint="@color/white"
         app:iconPadding="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints"
-        android:backgroundTint="#7474BF"/>
+        android:backgroundTint="@color/colorPrimary"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

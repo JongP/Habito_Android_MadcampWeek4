@@ -160,12 +160,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateName() {
-//        View view = getLayoutInflater().inflate(R.layout.dialog_name_update, null);
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setView(view).show();
-//
-
         dialog.setContentView(R.layout.dialog_name_update);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 

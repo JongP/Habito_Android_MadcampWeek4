@@ -2,6 +2,7 @@ package com.example.madcampweek4.ui.search;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,6 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import android.view.inputmethod.InputMethodManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,6 +56,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 
 public class SearchFragment extends Fragment {
@@ -65,7 +70,6 @@ public class SearchFragment extends Fragment {
     private ArrayList<Group> groupItemList;
     private Uri selectImageUri;
 
-    private LinearLayout dialogView;
     private ImageView iv_groupProfile;
 
     private FirebaseDatabase database;
@@ -203,15 +207,21 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.iv_closeSearch).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_searchGroup.setText("");
+                final InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(et_searchGroup.getWindowToken(), 0);
+            }
+        });
+
         et_searchGroup.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
             @Override
             public void afterTextChanged(Editable s) {

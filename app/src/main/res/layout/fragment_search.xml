@@ -15,20 +15,42 @@
         app:SpinKit_Color="@color/gray"
         android:layout_centerInParent="true"/>
 
-    <EditText
-        android:id="@+id/et_searchGroup"
-        android:layout_width="match_parent"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Search For Groups"
-        android:layout_marginTop="4dp"
-        android:paddingHorizontal="4dp"/>
+        android:id="@+id/relativeLayout">
+
+        <EditText
+            android:id="@+id/et_searchGroup"
+            android:background="@drawable/searchbar_bg"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="Search For Groups"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:paddingHorizontal="4dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <ImageView
+            android:id="@+id/iv_closeSearch"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/et_searchGroup"
+            android:layout_alignBottom="@+id/et_searchGroup"
+            android:layout_alignRight="@+id/et_searchGroup"
+            android:src="@drawable/ic_baseline_close_24"/>
+
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_groupSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="10dp"
-        android:layout_below="@id/et_searchGroup"
+        android:layout_below="@id/relativeLayout"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -36,11 +58,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
-        android:backgroundTint="@color/gray"
-        app:borderWidth="0dp"
-        android:src="@drawable/ic_group_add"/>
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_group_add"
+        app:tint="@color/white"/>
 
 </RelativeLayout>
