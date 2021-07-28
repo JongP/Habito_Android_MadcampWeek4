@@ -31,9 +31,11 @@
 
 
         <ImageView
+            android:id="@+id/iv_fish"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/fish1"
+            android:src="@drawable/fish2"
+            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"/>
 
 

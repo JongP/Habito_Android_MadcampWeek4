@@ -49,7 +49,7 @@ public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<BoardRecycler
                 .load(boardData.get(position).getPost_uri())
                 .into(holder.iv_postImage);
           String userProfileUrl= boardData.get(position).getUser_profilePic();
-          Log.d("Hello", userProfileUrl);
+          //Log.d("Hello", userProfileUrl);
           if(userProfileUrl!=null&& !userProfileUrl.equals("")){
               Glide.with(holder.itemView)
                       .load(userProfileUrl)
