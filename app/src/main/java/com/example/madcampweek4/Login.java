@@ -4,14 +4,6 @@ public class Login {
     private static String name, email;
     private static int groupNum, postNum, points;
 
-    public static int getPoints() {
-        return points;
-    }
-
-    public static void setPoints(int points) {
-        Login.points = points;
-    }
-
     Login(String name, String email){
         this.name=name;
         this.email=email;
@@ -47,5 +39,14 @@ public class Login {
 
     public static void setPostNum(int postNum) {
         Login.postNum = postNum;
+    }
+
+
+    public static int getPoints() {
+        return points;
+    }
+
+    public static void setPoints(int points) {
+        Login.points = points;
     }
 }

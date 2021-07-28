@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.gacha.GachaFragment">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_fishing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fishing"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/gray"
+        android:background="@color/gray"/>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/iv_gachaCoin"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/coin" />
+
+            <TextView
+                android:id="@+id/tv_gachaPoint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="points" />
+            />
+        </LinearLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_conffeti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-200dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            app:lottie_rawRes="@raw/confetti"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_fish"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="100dp"
+            app:lottie_loop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_fishing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-210dp"
+            app:lottie_rawRes="@raw/fishing" />
+
+    </RelativeLayout>
+</FrameLayout>

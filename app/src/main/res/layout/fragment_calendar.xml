@@ -17,7 +17,7 @@
         android:gravity="center"
         android:text="Calendar"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#9E28B3"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,58 +37,33 @@
         app:layout_constraintHorizontal_bias="0.488" android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_caltitle"/>
 
+
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity= "center"
         android:textSize="20dp"
-        android:id="@+id/tv_ratio" android:layout_marginTop="16dp"
+        android:text="click dates to see details"
+        android:id="@+id/tv_ratio"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
         app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp" android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btn_getfish"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/iv_truck"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="상품 받기"
-        android:layout_gravity="left|bottom"
-        android:clickable="true"
-        android:textColor="@color/white"
-        app:fabSize="auto"
-        app:icon="@drawable/outline_add_black_24dp"
-        app:iconTint="@color/white"
-        app:iconPadding="3dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_gotofish"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ratio"
-        tools:ignore="MissingConstraints"
-        android:backgroundTint="@color/colorPrimary"
-        android:visibility="invisible"/>
+        android:layout_height="150dp"
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btn_gotofish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="아쿠아리움 가기"
-        android:layout_gravity="left|bottom"
-        android:clickable="true"
-        android:textColor="@color/white"
-        app:fabSize="auto"
-        app:icon="@drawable/outline_add_black_24dp"
-        app:iconTint="@color/white"
-        app:iconPadding="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_getfish"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ratio"
-        tools:ignore="MissingConstraints"
-        android:backgroundTint="@color/colorPrimary"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/ship2" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

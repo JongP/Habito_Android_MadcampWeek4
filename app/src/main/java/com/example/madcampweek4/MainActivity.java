@@ -1,8 +1,11 @@
 package com.example.madcampweek4;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -19,10 +22,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
+import androidx.annotation.RequiresApi;
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     String email, name, profileUrl;
+    int point;
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         email = intent.getStringExtra("email");
         name=intent.getStringExtra("name");
         profileUrl=intent.getStringExtra("profileUrl");
+        point=intent.getIntExtra("points", 0);
 
 
 
@@ -132,12 +135,57 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_groups, R.id.nav_search, R.id.nav_calendar, R.id.nav_aquarium)
+                R.id.nav_groups, R.id.nav_search, R.id.nav_calendar, R.id.nav_aquarium,R.id.nav_gacha)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+        mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("posts/today/toasted").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                } else {
+                    Long pp = (Long) task.getResult().getValue();
+                    Long val= Long.valueOf(0);
+
+                    if (pp.equals(val)){
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("recent_points").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @RequiresApi(api = Build.VERSION_CODES.N)
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.e("firebase", "Error getting data", task.getException());
+                                        } else {
+                                            Long pp = (Long) task.getResult().getValue();
+                                            // Dialog
+                                            View dialogView = getLayoutInflater().inflate(R.layout.dialog_point, null);
+                                            final TextView tv_point = dialogView.findViewById(R.id.tv_point);
+                                            tv_point.setText("Today's Point : " + pp);
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                            builder.setView(dialogView);
+
+                                            AlertDialog alertDialog = builder.create();
+                                            alertDialog.show();
+
+                                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("posts/today/toasted").setValue(1);
+
+                                        }
+                                    }
+                                });
+                            }}, 2000);
+                    }
+
+                }
+            }
+        });
+
     }
 
     @Override

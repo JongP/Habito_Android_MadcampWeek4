@@ -83,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
                     Log.e("firebase", "Error getting data", task.getException());
                 }
                 else {
-                    tv_point.setText("points : "+String.valueOf(task.getResult().getValue()));
+                    tv_point.setText(String.valueOf(task.getResult().getValue()));
                 }
             }
         });

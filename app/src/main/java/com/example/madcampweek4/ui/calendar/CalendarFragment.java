@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.madcampweek4.R;
 import com.example.madcampweek4.ui.aquarium.AquariumFragment;
 import com.example.madcampweek4.ui.gacha.GachaActivity;
@@ -53,7 +54,7 @@ public class CalendarFragment extends Fragment {
     String[] result;
     double[] result_ratio;
 
-    Button btn_getfish, btn_gotofish;
+    LottieAnimationView iv_truck;
     //앞에서 받아오기~
     HashMap<String, Double> date_rate=new HashMap<String, Double>();
 
@@ -64,9 +65,8 @@ public class CalendarFragment extends Fragment {
 
         calendarView=view.findViewById(R.id.calendarView);
         tv_caltitle =view.findViewById(R.id.tv_caltitle);
+        iv_truck=view.findViewById(R.id.iv_truck);
 
-        btn_getfish=view.findViewById(R.id.btn_getfish);
-        btn_gotofish=view.findViewById(R.id.btn_gotofish);
 
         // firebase
         mFirebaseAuth= FirebaseAuth.getInstance();
@@ -133,7 +133,9 @@ public class CalendarFragment extends Fragment {
                                     }
                                 }
 
+
                                 //Toast.makeText(getActivity(), selectedDate+" selected", Toast.LENGTH_SHORT).show();
+
                                 if (date_rate.get(selectedDate) != null) {
                                     if (String.valueOf(date_rate.get(selectedDate)).equals("0")){
                                         ach_rate="0.0";
@@ -142,37 +144,11 @@ public class CalendarFragment extends Fragment {
                                     } else {
                                         ach_rate = date_rate.get(selectedDate).toString();
                                     }
-                                    tv_ratio.setText("The achivement rate of \n" + selectedDate + "\nis " + ach_rate);
+                                    //tv_ratio.setText(selectedDate + " : " + ach_rate+" achived");
+                                    tv_ratio.setText(ach_rate);
                                 } else {
-                                    tv_ratio.setText("No achivments found");
+                                    tv_ratio.setText("");
                                 }
-
-
-                                // 아쿠아리움 버튼버튼~~~Double.parseDouble
-                                double rate=Double.parseDouble(ach_rate);
-                                if (rate>=0.5){
-                                    btn_getfish.setVisibility(View.VISIBLE);
-                                    btn_getfish.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Toast.makeText(getActivity(), "물고기 획득 가능", Toast.LENGTH_SHORT).show();
-                                            Intent intent=new Intent(getActivity(), GachaActivity.class);
-                                            startActivity(intent);
-                                        }
-                                    });
-                                }
-                                else{
-                                    btn_getfish.setVisibility(View.INVISIBLE);
-                                }
-                                btn_gotofish.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new com.example.madcampweek4.ui.aquarium.AquariumFragment()).commit();
-
-                                    }
-                                });
 
 
                             }
@@ -191,7 +167,7 @@ public class CalendarFragment extends Fragment {
                 }
                 else {
                     name=String.valueOf(task.getResult().getValue());
-                    tv_caltitle.setText(name+"님의 달력 일기장");
+                    tv_caltitle.setText(name+"'s Calendar");
                 }
             }
         });

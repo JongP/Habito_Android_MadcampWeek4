@@ -20,6 +20,10 @@
             android:id="@+id/nav_aquarium"
             android:icon="@drawable/ic_baseline_anchor_24"
             android:title="Aquarium" />
+        <item
+            android:id="@+id/nav_gacha"
+            android:icon="@drawable/ic_baseline_local_play_24"
+            android:title="Gacha" />
     </group>
 
 </menu>
