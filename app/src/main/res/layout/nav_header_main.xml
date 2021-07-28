@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginBottom="30dp"
                 android:orientation="vertical">
@@ -61,8 +61,10 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/nav_header_vertical_spacing"
                     android:text="@string/nav_header_title"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/userEmail"
@@ -70,7 +72,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:text="@string/nav_header_subtitle"
-                    android:textAlignment="center" />
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
 
 
             </LinearLayout>

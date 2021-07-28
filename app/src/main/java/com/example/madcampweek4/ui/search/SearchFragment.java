@@ -1,9 +1,7 @@
 package com.example.madcampweek4.ui.search;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,9 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,7 +31,6 @@ import com.example.madcampweek4.R;
 import com.example.madcampweek4.ui.group.Group;
 import com.example.madcampweek4.ui.group.RecyclerViewAdapter;
 import com.github.ybq.android.spinkit.style.CubeGrid;
-import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,17 +42,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import android.view.inputmethod.InputMethodManager;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.INPUT_METHOD_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
 
 
 public class SearchFragment extends Fragment {
@@ -114,7 +105,7 @@ public class SearchFragment extends Fragment {
                 dialog.setContentView(R.layout.dialog_creategroup);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                iv_groupProfile = dialog.findViewById(R.id.iv_groupProfile);
+                iv_groupProfile = dialog.findViewById(R.id.iv_newPostImage);
                 Button btn_create_group = dialog.findViewById(R.id.btn_create_group);
                 EditText et_groupName = dialog.findViewById(R.id.et_groupName);
                 EditText et_groupInfo = dialog.findViewById(R.id.et_groupInfo);

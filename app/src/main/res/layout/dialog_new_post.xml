@@ -20,17 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <ImageView
-                android:id="@+id/iv_newPostImage"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-                app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
-
             <ImageView
                 android:id="@+id/iv_closeDialog"
                 android:layout_width="wrap_content"
@@ -45,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:text="CREATE NEW GROUP"
+                android:text="UPLOAD NEW POST"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -53,68 +42,63 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout2"
-                style="@style/parent"
-                android:layout_width="match_parent"
-                android:layout_margin="20dp"
+            <ImageView
+                android:id="@+id/iv_newPostImage"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView"
-                tools:ignore="MissingConstraints">
+                app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
 
-                <EditText
-                    android:id="@+id/et_groupName"
-                    style="@style/modifiedEditText"
-                    android:hint="Group Name"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/btn_addPostImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload new Photo"
+                android:layout_margin="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_newPostImage" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout3"
                 style="@style/parent"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+                app:layout_constraintTop_toBottomOf="@+id/btn_addPostImage">
 
                 <EditText
-                    android:id="@+id/et_groupInfo"
+                    android:id="@+id/et_newPostDescription"
                     style="@style/modifiedEditText"
-                    android:hint="Group Information"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
+                    android:ems="10"
+                    android:gravity="top"
+                    android:hint="Description"
+                    android:inputType="textMultiLine"
+                    android:lines="10"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/btn_create_group"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="20dp"
-                android:text="create"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-            <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/btn_uploadNewPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select your group's profile picture"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toTopOf="@+id/btn_create_group"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="Upload"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_newPostImage" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
