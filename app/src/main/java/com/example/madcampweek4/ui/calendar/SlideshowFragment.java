@@ -96,8 +96,6 @@ public class SlideshowFragment extends Fragment {
                         for(int i=0;i<result_ratio.length;i++){
                             str+=result_ratio[i]+", ";
                         }
-                        Log.d("비율 전체", str);
-                        Log.d("비율 전체1", ""+result_ratio.length);
 
                         calendarView.setSelectedDate(CalendarDay.today());
                         calendarView.addDecorators(new SundayDecorator(), new SaturdayDecorator());
