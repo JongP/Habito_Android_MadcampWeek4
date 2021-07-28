@@ -19,7 +19,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MadCampWeek4">
-        <activity android:name=".ui.board.NewPostActivity"/>
         <activity android:name=".ui.board.BoardActivity" />
         <activity android:name=".LoginActivity">
         </activity>
