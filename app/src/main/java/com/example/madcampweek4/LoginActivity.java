@@ -416,8 +416,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     }
                                 });
 
-
-
                             }
                         }else{
                             //for new users

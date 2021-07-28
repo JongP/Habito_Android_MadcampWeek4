@@ -8,7 +8,16 @@ public class UserAccount {
     private String password;
     private String name;
     private String profileURL;
+    private int points;
     //별명, 프로필 이미지 등으로 확장 가능
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
 
     public UserAccount() { }
 
