@@ -89,4 +89,7 @@ dependencies {
 
     //facebook sdk
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    implementation 'com.sdsmdg.harjot:rotatingtext:1.0.2'
+
 }
