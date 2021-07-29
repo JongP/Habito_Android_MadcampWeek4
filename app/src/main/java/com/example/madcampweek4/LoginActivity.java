@@ -93,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("email", user.getEmail());
             userId=user.getUid();
+            Login.setUid(userId);
             updateUserToday();
             mDatabaseRef.child("UserAccount").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
@@ -136,6 +137,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             FirebaseUser firebaseUser=mFirebaseAuth.getCurrentUser();
                             userId=firebaseUser.getUid();
+                            Login.setUid(userId);
                             updateUserToday();
                             intent.putExtra("email", firebaseUser.getEmail());
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

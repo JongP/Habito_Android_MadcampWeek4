@@ -3,6 +3,8 @@ package com.example.madcampweek4.ui.board;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import java.util.HashMap;
+
 public class Board {
     private String post_id;
     private String user_id;
@@ -14,6 +16,7 @@ public class Board {
     private String post_uri;
     private String post_date;
     private int like;
+    private HashMap<String,Object> likes;
 
     public Board(){}
 
@@ -35,6 +38,7 @@ public class Board {
         this.post_uri = post_uri;
         this.post_date = post_date;
         this.like = like;
+        this.likes=null;
     }
 
 
@@ -108,5 +112,13 @@ public class Board {
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
+    }
+
+    public HashMap<String, Object> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(HashMap<String, Object> likes) {
+        this.likes = likes;
     }
 }

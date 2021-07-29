@@ -40,12 +40,13 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         //bind the textview with data received
-        Glide.with(holder.itemView)
-                .load(groupData.get(position).getProfile())
-                .into(holder.img_groupImage);
-        holder.tv_groupName.setText(groupData.get(position).getGroupName());
-        holder.tv_groupInfo.setText(groupData.get(position).getGroupInfo());
-
+        if(groupData.get(position)!=null) {
+            Glide.with(holder.itemView)
+                    .load(groupData.get(position).getProfile())
+                    .into(holder.img_groupImage);
+            holder.tv_groupName.setText(groupData.get(position).getGroupName());
+            holder.tv_groupInfo.setText(groupData.get(position).getGroupInfo());
+        }
     }
 
     @Override

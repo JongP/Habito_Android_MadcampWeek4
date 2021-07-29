@@ -3,6 +3,7 @@ package com.example.madcampweek4;
 public class Login {
     private static String name, email;
     private static int groupNum, postNum, points;
+    private  static String Uid;
 
     Login(String name, String email){
         this.name=name;
@@ -48,5 +49,13 @@ public class Login {
 
     public static void setPoints(int points) {
         Login.points = points;
+    }
+
+    public static String getUid() {
+        return Uid;
+    }
+
+    public static void setUid(String uid) {
+        Uid = uid;
     }
 }

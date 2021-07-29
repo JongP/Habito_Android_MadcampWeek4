@@ -67,15 +67,8 @@ public class AquariumFragment extends Fragment {
         iv_fishBalloon=view.findViewById(R.id.iv_fishBalloon);
         iv_fishBlue=view.findViewById(R.id.iv_fishBlue);
         lottie_powder=view.findViewById(R.id.lottie_powder);
-        //Animation fishAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.fish_move);
 
 
-        iv_fish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                
-            }
-        });
 
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override

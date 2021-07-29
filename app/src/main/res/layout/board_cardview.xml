@@ -72,21 +72,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="5dp">
+                    android:paddingBottom="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp">
 
                     <ImageView
-                        android:id="@+id/iv_likeEmpty"
+                        android:id="@+id/iv_like"
                         android:layout_width="20dp"
                         android:layout_height="23dp"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/heart"
                         app:tint="#616161"/>
+                    <TextView
+                        android:id="@+id/tv_likeNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:layout_marginLeft="4dp"/>
 
                     <TextView
                         android:id="@+id/tv_postContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginLeft="15dp"
                         android:text="Post Content1"
                         android:textSize="16sp"/>
