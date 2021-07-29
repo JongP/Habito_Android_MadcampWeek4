@@ -45,6 +45,20 @@
             android:layout_marginBottom="20dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"/>
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_powder"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/powder"
+            android:visibility="gone"
+            />
+
+
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/iv_cuteFish"
             android:layout_width="60dp"

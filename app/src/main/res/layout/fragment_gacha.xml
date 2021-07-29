@@ -14,7 +14,7 @@
         android:id="@+id/btn_fishing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-70dp"
+        android:layout_marginTop="-140dp"
         android:layout_marginHorizontal="40dp"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
@@ -25,7 +25,7 @@
         android:id="@+id/btn_pop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-150dp"
+        android:layout_marginTop="-230dp"
         android:layout_marginHorizontal="40dp"
         app:lottie_autoPlay="true"
         android:layout_gravity="center_horizontal"
@@ -36,7 +36,7 @@
         android:id="@+id/textWrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="370dp"
+        android:layout_marginTop="290dp"
         android:layout_centerHorizontal="true"
         />
     </RelativeLayout>
