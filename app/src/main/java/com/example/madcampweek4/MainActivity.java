@@ -185,16 +185,6 @@ public class MainActivity extends AppCompatActivity {
                                             });
                                             dialog.show();
 
-                                            // Dialog
-                                            View dialogView = getLayoutInflater().inflate(R.layout.dialog_point, null);
-                                            final TextView tv_point = dialogView.findViewById(R.id.tv_point);
-                                            tv_point.setText("Today's Point : " + pp);
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                            builder.setView(dialogView);
-
-                                            AlertDialog alertDialog = builder.create();
-                                            alertDialog.show();
-
                                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("posts/today/toasted").setValue(1);
 
                                         }
