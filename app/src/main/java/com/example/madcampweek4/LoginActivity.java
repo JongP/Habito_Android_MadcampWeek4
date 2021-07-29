@@ -257,16 +257,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             intent.putExtra("profileUrl", String.valueOf(gaccount.getPhotoUrl()));
                             Log.d("프로필 사진", String.valueOf(gaccount.getPhotoUrl()));
 
-                            //google id로 이것저것 할 수 있긴 한데, 로그인할 때마다 생기는 단점이 있음
-//                            UserAccount account=new UserAccount();
-//                            account.setIdToken(firebaseUser.getUid());
-//                            account.setEmailId(gaccount.getEmail());
-//                            account.setName(gaccount.getDisplayName());
-//                            account.setProfileURL("");
-//
-//                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
-
-
                             startActivity(intent);
                             finish();
                         } else{
@@ -329,15 +319,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 intent.putExtra("profileUrl", "페이스북");
                                 Log.d("페이스북 정보 : ", FBName +" "+FBEmail);
 
-                                //facebook id로 이것저것 할 수 있긴 한데, 로그인할 때마다 생기는 단점이 있음
-//                                UserAccount account=new UserAccount();
-//                                account.setIdToken(firebaseUser.getUid());
-//                                account.setEmailId(FBEmail);
-//                                account.setName(FBName);
-//                                account.setProfileURL("");
-//
-//                                mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
-
                                 startActivity(intent);
                                 finish();
 
@@ -389,8 +370,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onSuccess(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue()!=null){
                     Display_Fish.setOwn((ArrayList<Boolean>) dataSnapshot.getValue());
-                    //Log.d(TAG, dataSnapshot.getValue().toString());
-                    //Log.d(TAG, Fish.getOwn().toString());
+
                 } else//if user is first time to log in
                 {
                     Log.d(TAG, "fish data null");
