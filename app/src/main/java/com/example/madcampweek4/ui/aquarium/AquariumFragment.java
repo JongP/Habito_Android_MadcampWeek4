@@ -22,6 +22,7 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.madcampweek4.Fish;
 import com.example.madcampweek4.R;
 
@@ -37,6 +38,8 @@ public class AquariumFragment extends Fragment {
 
     private Boolean touched = false;
     private int touchedX,touchedY;
+
+    private LottieAnimationView lottie_powder;
 
     int width,height,min_height;
 
@@ -62,6 +65,7 @@ public class AquariumFragment extends Fragment {
         iv_fishWhale=view.findViewById(R.id.iv_fishWhale);
         iv_fishBalloon=view.findViewById(R.id.iv_fishBalloon);
         iv_fishBlue=view.findViewById(R.id.iv_fishBlue);
+        lottie_powder=view.findViewById(R.id.lottie_powder);
         //Animation fishAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.fish_move);
 
 
@@ -86,11 +90,15 @@ public class AquariumFragment extends Fragment {
                         touchedX = (int) x;
                         touchedY = (int) y;
                         touched=true;
+                        lottie_powder.setX(x-140);
+                        lottie_powder.setY(y-160);
 
+                        lottie_powder.setVisibility(View.VISIBLE);
                         ret =true;
                         break;
                     case MotionEvent.ACTION_UP:
                         touched=false;
+                        lottie_powder.setVisibility(View.GONE);
                         ret=true;
                         break;
                     case MotionEvent.ACTION_MOVE:
