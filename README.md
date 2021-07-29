@@ -4,19 +4,19 @@
 
 여러 사람들과 공유하고 인증하면서 습관을 형성할 수 있게 도와주는 어플리케이션
 
- → 인증의 기록들을 수치화하여 캘린더에 보여줌으로써 나의 습관 형성 과정을 볼 수 있음
+ → 습관 인증의 기록들을 시각화하여 캘린더에 보여줌으로써 나의 습관 형성 과정을 볼 수 있음
  
- → 인증하면 받는 포인트로 본인만의 아쿠아리움이 동기부여의 역할을 함
+ → 습관을 인증하면 1일 1회 받는 포인트로 본인만의 아쿠아리움을 채워나가며 동기부여의 역할을 함
 
 
 ## Development Environment
 
-> *Android Studio 4.1.2*
+> *Android Studio 4.1.0*
 >
 >  * compileSDKversion : 30
 >  * buildToolsversion : 30.0.3
->  * SDK 18(API Level 27) 기준 호환
->  * Firebase
+>  * SDK 21 기준 호환
+>  * Firebase Version : v4.6.0
 
 ## LOGIN & SIGN UP 
 
@@ -26,7 +26,7 @@
 
 - 회원가입할 때 프로필 사진, 이메일, 이름 등을 입력함
 - 비밀번호는 6자리 이상
-- 구글, 페이스북으로 로그인하면 default 프로필 사진 사용 
+- 페이스북으로 로그인하면 default 프로필 사진 사용 
 
 
 ## NAVIGATION & POINT DIALOG
