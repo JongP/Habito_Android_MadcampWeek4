@@ -64,9 +64,7 @@ public class CollectionFragment extends Fragment {
 
     private void adaptfish() {
         fish= Fish.getOwn();
-        Log.d("로그1", fish.toString());
         display_fish= Display_Fish.getOwn();
-        Log.d("로그2", display_fish.toString());
         collectionRecyclerViewAdapter = new CollectionRecyclerViewAdapter(getContext(), fish, display_fish);
         recyclerView.setAdapter(collectionRecyclerViewAdapter);
 

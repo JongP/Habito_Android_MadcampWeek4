@@ -166,7 +166,7 @@ public class CalendarFragment extends Fragment {
                 }
                 else {
                     name=String.valueOf(task.getResult().getValue());
-                    tv_caltitle.setText(name+"'s Calendar");
+                    tv_caltitle.setText(name+"'s CALENDAR");
                 }
             }
         });

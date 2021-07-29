@@ -98,8 +98,10 @@ public class CollectionRecyclerViewAdapter extends RecyclerView.Adapter<Collecti
 
         if (display_fish.get(position)){
             holder.fb_addfish.setText("REMOVE");
+            holder.fb_addfish.setIconResource(R.drawable.outline_remove_black_24dp);
         }else{
             holder.fb_addfish.setText("ADD");
+            holder.fb_addfish.setIconResource(R.drawable.outline_add_black_24dp);
         }
 
         holder.fb_addfish.setOnClickListener(new View.OnClickListener() {
