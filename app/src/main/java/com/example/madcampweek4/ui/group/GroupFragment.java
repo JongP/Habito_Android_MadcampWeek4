@@ -92,8 +92,8 @@ public class GroupFragment extends Fragment {
                                 @Override
                                 public void onSuccess(DataSnapshot dataSnapshot) {
                                     Group group = dataSnapshot.getValue(Group.class);
-                                    Log.d(TAG, "onSuccess: ");
-                                    Log.d(TAG, group.toString());
+                                    //Log.d(TAG, "onSuccess: ");
+                                    //Log.d(TAG, group.toString());
                                     groupData.add(group);
                                     groupRecyclerViewAdapter.notifyDataSetChanged();
                                 }

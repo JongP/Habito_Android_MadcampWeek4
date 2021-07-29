@@ -59,6 +59,12 @@ public class AquariumFragment extends Fragment {
         //Animation fishAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.fish_move);
 
 
+        iv_fish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
 
 
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -70,12 +76,7 @@ public class AquariumFragment extends Fragment {
                         view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     }
                     randomFishMove(iv_fish,0,0,1);
-
                     ownFishMove();
-
-
-
-
 
                 }
             });

@@ -1,6 +1,7 @@
 package com.example.madcampweek4.ui.gacha;
 
 import android.animation.Animator;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -22,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper;
+import com.sdsmdg.harjot.rotatingtext.models.Rotatable;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -29,11 +32,12 @@ import java.util.Random;
 
 public class GachaFragment extends Fragment {
     private View view;
-    private AppCompatButton btn_fishing;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference databaseRef;
     private TextView tv_gachaPoint;
-    private LottieAnimationView lottie_fishing,lottie_fish,lottie_conffeti;
+    private LottieAnimationView lottie_fishing,lottie_fish,lottie_conffeti,btn_fishing,btn_pop;
+    private RotatingTextWrapper textWrapper;
+
     private String TAG = "GachaFragTAG";
     public GachaFragment() {
         // Required empty public constructor
@@ -57,24 +61,61 @@ public class GachaFragment extends Fragment {
         lottie_conffeti= view.findViewById(R.id.lottie_conffeti);
         btn_fishing = view.findViewById(R.id.btn_fishing);
         tv_gachaPoint = view.findViewById(R.id.tv_gachaPoint);
+        btn_pop=view.findViewById(R.id.btn_pop);
+        textWrapper=view.findViewById(R.id.textWrapper);
 
         tv_gachaPoint.setText(String.valueOf(Login.getPoints()));
 
-        btn_fishing.setOnClickListener(new View.OnClickListener() {
+        textWrapper.setSize(30);
+        Rotatable rotatable = new Rotatable(Color.parseColor("#539ae0"),1700,
+                "Jellyfish","Turtle","Shark","Whale","Blow","Tuna","Chub","Loach","Catfish","Salmon");
+        rotatable.setSize(30);
+        rotatable.setAnimationDuration(500);
+
+        textWrapper.setContent("300 coins for ?",rotatable);
+
+
+
+        btn_fishing.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onLongClick(View v) {
                 if(Login.getPoints()<300){
                     Toast.makeText(getContext(),"Not Enough Points",Toast.LENGTH_SHORT).show();
-                    return;
+                    return false;
                 }
                 Login.setPoints(Login.getPoints()-300);
                 tv_gachaPoint.setText(String.valueOf(Login.getPoints()));
+
 
                 HashMap<String,Object> map = new HashMap<>();
                 map.put("points",Login.getPoints());
                 databaseRef.updateChildren(map);
 
-                btn_fishing.setVisibility(View.GONE);
+                btn_pop.setAnimation(R.raw.button_pop);
+                btn_pop.addAnimatorListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        btn_fishing.setVisibility(View.GONE);
+
+                        textWrapper.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        btn_pop.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+
 
                 lottie_fishing.playAnimation();
                 new Handler().postDelayed(new Runnable() {
@@ -85,7 +126,13 @@ public class GachaFragment extends Fragment {
                         lottie_conffeti.playAnimation();
                     }
                 },4600);
-
+                return true;
+            }
+        });
+        btn_fishing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Long Click for Gacha",Toast.LENGTH_SHORT).show();
             }
         });
 
