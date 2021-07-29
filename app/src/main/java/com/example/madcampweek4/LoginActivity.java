@@ -195,6 +195,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
 
+        // 페이스북 로그인 관련
         FacebookSdk.sdkInitialize(getApplicationContext());
         mCallbackManager=CallbackManager.Factory.create();
 
@@ -253,7 +254,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("name", String.valueOf(gaccount.getDisplayName()));
                             intent.putExtra("email", String.valueOf(gaccount.getEmail()));
-                            intent.putExtra("profileUrl", String.valueOf(String.valueOf(gaccount.getPhotoUrl())));
+                            intent.putExtra("profileUrl", String.valueOf(gaccount.getPhotoUrl()));
+                            Log.d("프로필 사진", String.valueOf(gaccount.getPhotoUrl()));
 
                             //google id로 이것저것 할 수 있긴 한데, 로그인할 때마다 생기는 단점이 있음
 //                            UserAccount account=new UserAccount();
@@ -321,7 +323,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                                 Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("name", FBName);//FBUUID);
+                                mDatabaseRef.child("UserAccount").child(userId).child("name").setValue(FBName);
                                 intent.putExtra("email", FBEmail);
+                                mDatabaseRef.child("UserAccount").child(userId).child("emailId").setValue(FBEmail);
                                 intent.putExtra("profileUrl", "페이스북");
                                 Log.d("페이스북 정보 : ", FBName +" "+FBEmail);
 
@@ -378,7 +382,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     mDatabaseRef.child("UserAccount").child(userId).child("fish").setValue(arrayList);
                 }
             }
-
         });
         //update user display_fish
         mDatabaseRef.child("UserAccount").child(userId).child("display_fish").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
