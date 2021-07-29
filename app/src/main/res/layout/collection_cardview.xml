@@ -11,8 +11,8 @@
         android:id="@+id/cv_searchGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="10dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="3dp"
         app:cardUseCompatPadding="true">
 
         <LinearLayout

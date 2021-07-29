@@ -172,6 +172,8 @@ public class ProfileActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 Intent intent3 = new Intent(ProfileActivity.this, MainActivity.class);
+                intent3.putExtra("email", email);
+                intent3.putExtra("name", name);
                 startActivity(intent3);
                 return true;
         }

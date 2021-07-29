@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         point=intent.getIntExtra("points", 0);
 
 
-
         mFirebaseAuth= FirebaseAuth.getInstance();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
 
