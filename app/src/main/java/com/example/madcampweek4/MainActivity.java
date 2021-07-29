@@ -1,7 +1,10 @@
 package com.example.madcampweek4;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     String email, name, profileUrl;
     int point;
+    Dialog dialog;
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
@@ -71,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseAuth= FirebaseAuth.getInstance();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
-
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference().child("UserProfile");
@@ -164,18 +167,22 @@ public class MainActivity extends AppCompatActivity {
                                             Log.e("firebase", "Error getting data", task.getException());
                                         } else {
                                             Long pp = (Long) task.getResult().getValue();
-                                            // Dialog
-                                            if (pp==null){
-                                                pp= Long.valueOf(0);
-                                            }
-                                            View dialogView = getLayoutInflater().inflate(R.layout.dialog_point, null);
-                                            final TextView tv_point = dialogView.findViewById(R.id.tv_point);
-                                            tv_point.setText("Today's Point : " + pp);
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                            builder.setView(dialogView);
 
-                                            AlertDialog alertDialog = builder.create();
-                                            alertDialog.show();
+                                            dialog = new Dialog(MainActivity.this);
+                                            dialog.setContentView(R.layout.dialog_point);
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                            ImageView iv_closeDialog = dialog.findViewById(R.id.iv_closeDialog);
+                                            final TextView tv_point = dialog.findViewById(R.id.tv_point);
+                                            tv_point.setText("TODAY'S POINT : " + pp);
+
+                                            iv_closeDialog.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                            dialog.show();
 
                                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("posts/today/toasted").setValue(1);
 

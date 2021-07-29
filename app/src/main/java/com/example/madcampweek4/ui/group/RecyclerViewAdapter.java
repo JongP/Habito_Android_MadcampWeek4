@@ -17,6 +17,7 @@ import com.example.madcampweek4.Login;
 import com.example.madcampweek4.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -147,7 +148,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tv_groupName = itemView.findViewById(R.id.tv_groupSearchName);
             tv_groupInfo = itemView.findViewById(R.id.tv_groupSearchInfo);
             img_groupImage = itemView.findViewById(R.id.img_groupSearchImage);
-            fb_joinGroup = itemView.findViewById(R.id.fb_addfish);
+            fb_joinGroup = itemView.findViewById(R.id.fb_joinGroup);
 
 
         }

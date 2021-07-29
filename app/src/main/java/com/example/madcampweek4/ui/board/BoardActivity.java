@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,11 +17,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +35,7 @@ import com.example.madcampweek4.MainActivity;
 import com.example.madcampweek4.R;
 import com.example.madcampweek4.UserAccount;
 import com.example.madcampweek4.ui.group.Group;
+import com.example.madcampweek4.ui.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -89,6 +93,13 @@ public class BoardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setTitle(Html.fromHtml("<font color='#000000'>Group's Posts</font>"));
+        ab.setElevation(0);
+        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(R.drawable.outline_arrow_back_black_24dp);
 
         Intent intent = getIntent();
         groupId=intent.getStringExtra("groupId");
@@ -189,6 +200,17 @@ public class BoardActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case android.R.id.home:
+                Intent intent3 = new Intent(BoardActivity.this, MainActivity.class);
+                startActivity(intent3);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

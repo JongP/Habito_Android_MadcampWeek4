@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#E3E3E3</color>
     <color name="sea">#6BD3EA</color>
+    <color name="red">#FFF44336</color>
 
     <!--colors for ui template-->
     <color name="colorPrimary">#0052D4</color>
@@ -23,6 +24,6 @@
     <!--colros for card-->
     <color name="whiteCardColor">#fff</color>
 
-    <!--수아가 좋아하는 색깔-->
     <color name ='Jodhpurblue1'>#65C7F7</color>
+    <color name="light_medium_gray">#f3f3f3</color>
 </resources>

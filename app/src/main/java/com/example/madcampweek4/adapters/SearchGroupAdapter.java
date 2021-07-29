@@ -56,4 +56,8 @@ public class SearchGroupAdapter extends RecyclerView.Adapter<SearchGroupAdapter.
             groupContent=itemView.findViewById(R.id.tv_groupContent);
         }
     }
+
+    public int getItemViewType(int position){
+        return position;
+    }
 }

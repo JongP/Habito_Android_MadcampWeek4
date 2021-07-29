@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/nav_calendar"
         android:name="com.example.madcampweek4.ui.calendar.CalendarFragment"
-        android:label="@string/menu_slideshow"
+        android:label="Calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
