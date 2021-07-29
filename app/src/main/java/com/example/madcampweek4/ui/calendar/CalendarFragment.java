@@ -22,7 +22,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.madcampweek4.R;
 import com.example.madcampweek4.ui.aquarium.AquariumFragment;
-import com.example.madcampweek4.ui.gacha.GachaActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

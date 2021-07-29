@@ -3,7 +3,7 @@ package com.example.madcampweek4;
 import java.util.ArrayList;
 
 public class Fish {
-    private static ArrayList<Boolean> own;
+    public static ArrayList<Boolean> own;
     private static int[] head= {-1,-1,1,1,1,-1,-1,1};
     private static int MAX_FISH = 7;
 

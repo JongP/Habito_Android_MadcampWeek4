@@ -24,6 +24,10 @@
             android:id="@+id/nav_gacha"
             android:icon="@drawable/ic_baseline_local_play_24"
             android:title="Gacha" />
+        <item
+            android:id="@+id/nav_collection"
+            android:icon="@drawable/ic_menu_collection"
+            android:title="Collection" />
     </group>
 
 </menu>

@@ -37,6 +37,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth; // firebase auth
@@ -111,6 +113,13 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setPassword(strPwd);// ㄱㅊ
                             account.setProfileURL("");
                             account.setPoints(0);
+
+                            //물고기 보이기
+                            ArrayList<Boolean> arrayList=new ArrayList<>();
+                            for(int i=0;i<Fish.getMaxFish();i++){
+                                arrayList.add(false);
+                            }
+                            account.setDisplay_fish(arrayList);
 
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
 

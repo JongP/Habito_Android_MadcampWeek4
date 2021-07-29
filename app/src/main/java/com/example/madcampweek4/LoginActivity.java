@@ -334,7 +334,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 //
 //                                mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
 
-
                                 startActivity(intent);
                                 finish();
 
@@ -369,14 +368,34 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Fish.setOwn( (ArrayList<Boolean>) dataSnapshot.getValue());
                     //Log.d(TAG, dataSnapshot.getValue().toString());
                     //Log.d(TAG, Fish.getOwn().toString());
-                }else//if user is first time to log in
+                } else//if user is first time to log in
                 {
                     Log.d(TAG, "fish data null");
                     ArrayList<Boolean> arrayList=new ArrayList<>();
                     for(int i=0;i<Fish.getMaxFish();i++){
-                        arrayList.add(false);
+                        arrayList.add(true);
                     }
                     mDatabaseRef.child("UserAccount").child(userId).child("fish").setValue(arrayList);
+                }
+            }
+
+        });
+        //update user display_fish
+        mDatabaseRef.child("UserAccount").child(userId).child("display_fish").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null){
+                    Display_Fish.setOwn((ArrayList<Boolean>) dataSnapshot.getValue());
+                    //Log.d(TAG, dataSnapshot.getValue().toString());
+                    //Log.d(TAG, Fish.getOwn().toString());
+                } else//if user is first time to log in
+                {
+                    Log.d(TAG, "fish data null");
+                    ArrayList<Boolean> arrayList=new ArrayList<>();
+                    for(int i=0;i<Display_Fish.getMaxFish();i++){
+                        arrayList.add(true);
+                    }
+                    mDatabaseRef.child("UserAccount").child(userId).child("display_fish").setValue(arrayList);
                 }
             }
 

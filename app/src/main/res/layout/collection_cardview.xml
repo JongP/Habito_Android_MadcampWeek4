@@ -22,14 +22,16 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <ImageView
-                android:id="@+id/img_groupSearchImage"
-                android:layout_width="360dp"
-                android:layout_height="300dp"
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/img_fish"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
                 app:srcCompat="@drawable/ic_launcher_background" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,7 +66,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginTop="1dp"
                         android:layout_marginBottom="8dp"
-                        android:textSize="24sp"
+                        android:textSize="12sp"
                         android:text="Group Info Description"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -75,15 +77,15 @@
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/fb_addfish"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
                     android:layout_gravity="bottom"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="Join"
-                    app:icon="@drawable/ic_baseline_supervisor_account_24"
+                    android:layout_marginBottom="5dp"
                     android:backgroundTint="@color/white"
+                    android:text="ADD"
+                    app:icon="@drawable/outline_add_black_24dp"
                     app:strokeColor="@color/black"
                     app:strokeWidth="1dp"
                     />
