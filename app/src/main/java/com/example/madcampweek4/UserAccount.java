@@ -12,7 +12,16 @@ public class UserAccount {
     private String profileURL;
     private int points;
     private static ArrayList<Boolean> display_fish;
-    //별명, 프로필 이미지 등으로 확장 가능
+    private static ArrayList<Boolean> fish;
+
+    public static ArrayList<Boolean> getFish() {
+        return fish;
+    }
+
+    public static void setFish(ArrayList<Boolean> fish) {
+        UserAccount.fish = fish;
+    }
+//별명, 프로필 이미지 등으로 확장 가능
 
     public int getPoints() {
         return points;

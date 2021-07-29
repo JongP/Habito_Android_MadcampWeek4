@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAuth= FirebaseAuth.getInstance();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("MadCampWeek4");
 
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference().child("UserProfile");
 
@@ -165,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
                                         } else {
                                             Long pp = (Long) task.getResult().getValue();
                                             // Dialog
+                                            if (pp==null){
+                                                pp= Long.valueOf(0);
+                                            }
                                             View dialogView = getLayoutInflater().inflate(R.layout.dialog_point, null);
                                             final TextView tv_point = dialogView.findViewById(R.id.tv_point);
                                             tv_point.setText("Today's Point : " + pp);

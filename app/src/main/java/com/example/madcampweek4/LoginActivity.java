@@ -373,7 +373,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Log.d(TAG, "fish data null");
                     ArrayList<Boolean> arrayList=new ArrayList<>();
                     for(int i=0;i<Fish.getMaxFish();i++){
-                        arrayList.add(true);
+                        arrayList.add(false);
                     }
                     mDatabaseRef.child("UserAccount").child(userId).child("fish").setValue(arrayList);
                 }

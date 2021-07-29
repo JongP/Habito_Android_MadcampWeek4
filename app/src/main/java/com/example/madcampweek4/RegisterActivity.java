@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -38,6 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -87,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                 strEmail=mEtEmail.getText().toString();
                 strPwd=mEtPwd.getText().toString();
                 strName=mEtName.getText().toString();
+                Log.d("회원가입", strEmail+ " "+strPwd+" "+strName);
 
                 mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -114,14 +117,22 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setProfileURL("");
                             account.setPoints(0);
 
-                            //물고기 보이기
+                            //가진 물고기
                             ArrayList<Boolean> arrayList=new ArrayList<>();
                             for(int i=0;i<Fish.getMaxFish();i++){
                                 arrayList.add(false);
                             }
-                            account.setDisplay_fish(arrayList);
+                            account.setFish(arrayList);
+                            //물고기 보이기
+                            ArrayList<Boolean> arrayList2=new ArrayList<>();
+                            for(int i=0;i<Display_Fish.getMaxFish();i++){
+                                arrayList2.add(true);
+                            }
+                            account.setDisplay_fish(arrayList2);
 
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
+
+                            HashMap<String,Object> map = new HashMap<>();
 
 
                             Toast.makeText(RegisterActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
