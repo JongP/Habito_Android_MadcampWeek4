@@ -2,6 +2,8 @@ package com.example.madcampweek4;
 
 //사용자 계정 정보 모델 클래스
 
+import java.util.ArrayList;
+
 public class UserAccount {
     private String idToken; //firebase uid
     private String emailId;
@@ -9,10 +11,19 @@ public class UserAccount {
     private String name;
     private String profileURL;
     private int points;
+    private static ArrayList<Boolean> display_fish;
     //별명, 프로필 이미지 등으로 확장 가능
 
     public int getPoints() {
         return points;
+    }
+
+    public static ArrayList<Boolean> getDisplay_fish() {
+        return display_fish;
+    }
+
+    public static void setDisplay_fish(ArrayList<Boolean> display_fish) {
+        UserAccount.display_fish = display_fish;
     }
 
     public void setPoints(int points) {

@@ -20,6 +20,7 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
+import com.example.madcampweek4.Display_Fish;
 import com.example.madcampweek4.Fish;
 import com.example.madcampweek4.R;
 
@@ -137,20 +138,22 @@ public class AquariumFragment extends Fragment {
 
     private void ownFishMove(){
         ArrayList<Boolean> ownFish = Fish.getOwn();
+        ArrayList<Boolean> displayFish= Display_Fish.getOwn();
+        Log.d("아쿠아리움", displayFish.toString());
 
-        if(ownFish.get(0)) randomFishMove(iv_cutefish,0,0,-1);
+        if(ownFish.get(0)&&displayFish.get(0)) randomFishMove(iv_cutefish,0,0,-1);
         else iv_cutefish.setVisibility(View.GONE);
-        if(ownFish.get(1)) randomFishMove(iv_fishShark,0,0,-1);
+        if(ownFish.get(1)&&displayFish.get(1)) randomFishMove(iv_fishShark,0,0,-1);
         else iv_fishShark.setVisibility(View.GONE);
-        if(ownFish.get(2)) randomFishMove(iv_fishSpinJelly,0,0,1);
+        if(ownFish.get(2)&&displayFish.get(2)) randomFishMove(iv_fishSpinJelly,0,0,1);
         else iv_fishSpinJelly.setVisibility(View.GONE);
-        if(ownFish.get(3)) randomFishMove(iv_fishTurtle,0,0,1);
+        if(ownFish.get(3)&&displayFish.get(3)) randomFishMove(iv_fishTurtle,0,0,1);
         else iv_fishTurtle.setVisibility(View.GONE);
-        if(ownFish.get(4)) randomFishMove(iv_fishWhale,0,0,1);
+        if(ownFish.get(4)&&displayFish.get(4)) randomFishMove(iv_fishWhale,0,0,1);
         else iv_fishWhale.setVisibility(View.GONE);
-        if(ownFish.get(5)) randomFishMove(iv_fishBalloon,0,0,-1);
+        if(ownFish.get(5)&&displayFish.get(5)) randomFishMove(iv_fishBalloon,0,0,-1);
         else iv_fishBalloon.setVisibility(View.GONE);
-        if(ownFish.get(6))  randomFishMove(iv_fishBlue,0,0,1);
+        if(ownFish.get(6)&&displayFish.get(6))  randomFishMove(iv_fishBlue,0,0,1);
         else iv_fishBlue.setVisibility(View.GONE);
 
     }

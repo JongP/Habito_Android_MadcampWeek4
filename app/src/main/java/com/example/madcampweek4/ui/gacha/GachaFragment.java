@@ -50,8 +50,6 @@ public class GachaFragment extends Fragment {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseRef = FirebaseDatabase.getInstance().getReference("MadCampWeek4/UserAccount/"+userId);
 
-
-
         lottie_fishing = view.findViewById(R.id.lottie_fishing);
         lottie_fish = view.findViewById(R.id.lottie_fish);
         lottie_conffeti= view.findViewById(R.id.lottie_conffeti);
