@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_groups, R.id.nav_search, R.id.nav_calendar, R.id.nav_aquarium,R.id.nav_gacha)
+                R.id.nav_groups, R.id.nav_search, R.id.nav_calendar, R.id.nav_aquarium,R.id.nav_gacha, R.id.nav_collection)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -186,14 +186,14 @@ public class MainActivity extends AppCompatActivity {
                                             dialog.show();
 
                                             // Dialog
-//                                            View dialogView = getLayoutInflater().inflate(R.layout.dialog_point, null);
-//                                            final TextView tv_point = dialogView.findViewById(R.id.tv_point);
-//                                            tv_point.setText("Today's Point : " + pp);
-//                                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                                            builder.setView(dialogView);
-//
-//                                            AlertDialog alertDialog = builder.create();
-//                                            alertDialog.show();
+                                            View dialogView = getLayoutInflater().inflate(R.layout.dialog_point, null);
+                                            final TextView tv_point = dialogView.findViewById(R.id.tv_point);
+                                            tv_point.setText("Today's Point : " + pp);
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                            builder.setView(dialogView);
+
+                                            AlertDialog alertDialog = builder.create();
+                                            alertDialog.show();
 
                                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("posts/today/toasted").setValue(1);
 

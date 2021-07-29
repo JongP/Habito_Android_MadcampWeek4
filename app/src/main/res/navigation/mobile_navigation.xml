@@ -35,4 +35,10 @@
         android:label="Gacha"
         tools:layout="@layout/fragment_gacha" />
 
+    <fragment
+        android:id="@+id/nav_collection"
+        android:name="com.example.madcampweek4.ui.collection.CollectionFragment"
+        android:label="Collection"
+        tools:layout="@layout/fragment_collection" />
+
 </navigation>

@@ -195,6 +195,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
 
+        // 페이스북 로그인 관련
         FacebookSdk.sdkInitialize(getApplicationContext());
         mCallbackManager=CallbackManager.Factory.create();
 
@@ -253,7 +254,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("name", String.valueOf(gaccount.getDisplayName()));
                             intent.putExtra("email", String.valueOf(gaccount.getEmail()));
-                            intent.putExtra("profileUrl", String.valueOf(String.valueOf(gaccount.getPhotoUrl())));
+                            intent.putExtra("profileUrl", String.valueOf(gaccount.getPhotoUrl()));
+                            Log.d("프로필 사진", String.valueOf(gaccount.getPhotoUrl()));
 
                             //google id로 이것저것 할 수 있긴 한데, 로그인할 때마다 생기는 단점이 있음
 //                            UserAccount account=new UserAccount();
@@ -321,7 +323,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                                 Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("name", FBName);//FBUUID);
+                                mDatabaseRef.child("UserAccount").child(userId).child("name").setValue(FBName);
                                 intent.putExtra("email", FBEmail);
+                                mDatabaseRef.child("UserAccount").child(userId).child("emailId").setValue(FBEmail);
                                 intent.putExtra("profileUrl", "페이스북");
                                 Log.d("페이스북 정보 : ", FBName +" "+FBEmail);
 
@@ -333,7 +337,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 //                                account.setProfileURL("");
 //
 //                                mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
-
 
                                 startActivity(intent);
                                 finish();
@@ -369,7 +372,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Fish.setOwn( (ArrayList<Boolean>) dataSnapshot.getValue());
                     //Log.d(TAG, dataSnapshot.getValue().toString());
                     //Log.d(TAG, Fish.getOwn().toString());
-                }else//if user is first time to log in
+                } else//if user is first time to log in
                 {
                     Log.d(TAG, "fish data null");
                     ArrayList<Boolean> arrayList=new ArrayList<>();
@@ -377,6 +380,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         arrayList.add(false);
                     }
                     mDatabaseRef.child("UserAccount").child(userId).child("fish").setValue(arrayList);
+                }
+            }
+        });
+        //update user display_fish
+        mDatabaseRef.child("UserAccount").child(userId).child("display_fish").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null){
+                    Display_Fish.setOwn((ArrayList<Boolean>) dataSnapshot.getValue());
+                    //Log.d(TAG, dataSnapshot.getValue().toString());
+                    //Log.d(TAG, Fish.getOwn().toString());
+                } else//if user is first time to log in
+                {
+                    Log.d(TAG, "fish data null");
+                    ArrayList<Boolean> arrayList=new ArrayList<>();
+                    for(int i=0;i<Display_Fish.getMaxFish();i++){
+                        arrayList.add(true);
+                    }
+                    mDatabaseRef.child("UserAccount").child(userId).child("display_fish").setValue(arrayList);
                 }
             }
 
