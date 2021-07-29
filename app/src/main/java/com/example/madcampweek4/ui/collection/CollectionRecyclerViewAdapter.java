@@ -108,22 +108,24 @@ public class CollectionRecyclerViewAdapter extends RecyclerView.Adapter<Collecti
             @Override
             public void onClick(View v) {
                 if (holder.fb_addfish.getText().equals("ADD")){
-                    Log.d("리사이클러", "추가"+position);
+                    //Log.d("리사이클러", "추가"+position);
                     holder.fb_addfish.setText("REMOVE");
+                    holder.fb_addfish.setIconResource(R.drawable.outline_remove_black_24dp);
                     // position이랑 display_fish 순번, 위치 같음
                     ArrayList<Boolean> displayFish=Display_Fish.getOwn();
                     displayFish.set(position, true);
                     Display_Fish.setOwn(displayFish);
-                    Log.d("리사이클러a",Display_Fish.getOwn().toString());
+                    //Log.d("리사이클러a",Display_Fish.getOwn().toString());
                     mDatabaseRef.child("UserAccount").child(user.getUid()).child("display_fish").setValue(displayFish);
 
                 } else{
-                    Log.d("리사이클러", "삭제"+position);
+                    //Log.d("리사이클러", "삭제"+position);
                     holder.fb_addfish.setText("ADD");
+                    holder.fb_addfish.setIconResource(R.drawable.outline_add_black_24dp);
                     ArrayList<Boolean> displayFish=Display_Fish.getOwn();
                     displayFish.set(position, false);
                     Display_Fish.setOwn(displayFish);
-                    Log.d("리사이클러r",Display_Fish.getOwn().toString());
+                    //Log.d("리사이클러r",Display_Fish.getOwn().toString());
                     mDatabaseRef.child("UserAccount").child(user.getUid()).child("display_fish").setValue(displayFish);
 
                 }
