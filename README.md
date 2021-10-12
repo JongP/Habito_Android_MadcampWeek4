@@ -1,6 +1,9 @@
 # <img src="https://user-images.githubusercontent.com/63537847/127521768-0f0cb3fb-7f23-4a4f-a1c1-4419986c45e2.png" width="30" height="30"> Hábito
 
-> ### 팀원 : 강수아, 금나연, 박종회
+> ### 팀원 : 
+>     강수아 - MyProfile, Tab2(SearchNewGroup), Overall Design     
+>     금나연 - Login & SignUp, Tab5(MyCollection), Navigation    
+>     박종회 - Tab1(MyGroups), Tab3(MyAquarium), Tab4(GACHA)   
 
 여러 사람들과 공유하고 인증하면서 습관을 형성할 수 있게 도와주는 어플리케이션
 
